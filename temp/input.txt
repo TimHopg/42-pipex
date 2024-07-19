@@ -1,0 +1,16 @@
+uno
+dos
+keyword
+keyword1
+keyword     4
+lambda
+sortakewword
+elmo
+lambda
+ana
+cryptic
+sorry 
+
+TEST: (./pipex input.txt "cat" "grep keyword" "sort" "uniq" output.txt)
+
+valgrind --leak-check=full -s ./pipex here_doc SCHOOL42 "/usr/bin/cat" "sleep 5" "/usr/bin/grep keyword" "/usr/bin/sort" "/usr/bin/uniq" "sleep 5" output.txt

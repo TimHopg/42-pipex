@@ -3,52 +3,61 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dde-maga <dde-maga@student.42.fr>          +#+  +:+       +#+         #
+#    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/03/25 16:18:50 by dde-maga          #+#    #+#              #
-#    Updated: 2024/05/09 17:13:03 by dde-maga         ###   ########.fr        #
+#    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
+#    Updated: 2024/07/19 19:40:49 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex 
+NAME 		= pipex
 
-LIB_SRCS =  ft_strlen.c ft_putchar_fd.c ft_putstr_fd.c ft_memset.c \
-			ft_calloc.c ft_strdup.c ft_itoa.c ft_split.c \
-			ft_strncmp.c ft_substr.c ft_strjoin.c ft_strcmp.c ft_isspace.c
-SRC_GNL =	gnl_utils.c gnl.c
-SRC_PARSER = arguments.c files.c here_doc.c
-SRC_PROCESSES = childs.c
-SRC_CLEANING = errors.c
+CC 			= cc
+RM 			= rm -rf
+INCLUDE 	= -Iinclude
 
-SRC =	$(addprefix ./srcs/lib/, $(LIB_SRCS)) \
-		$(addprefix ./srcs/lib/gnl/, $(SRC_GNL))\
-		$(addprefix ./srcs/parser/, $(SRC_PARSER))\
-		$(addprefix ./srcs/processes/, $(SRC_PROCESSES))\
-		$(addprefix ./srcs/cleaning/, $(SRC_CLEANING))\
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE) -g -O0 # -fsanitize=address
 
-SRCOBJ = obj/
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-OBJ = $(addprefix $(SRCOBJ), $(SRC:./srcs/%.c=%.o))
+SRC_DIR 	= src/
+OBJ_DIR 	= obj/
+LIBFT_DIR 	= libft/
+LIBFT		= -L $(LIBFT_DIR) -lft
+
+SRC 		= 	pipex.c
+
+OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 all: $(NAME)
 
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c 
+	@mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(SRCOBJ)%.o: srcs/%.c
-	@mkdir -p $(SRCOBJ)
-	@mkdir -p $(dir $@)
-	@${CC} ${CFLAGS} -c $< -o $@
-	
 $(NAME): $(OBJ)
-	@${CC} ${CFLAGS} main.c ${OBJ} -o $(NAME)
-	@echo Done Pipex!
+	@make -C $(LIBFT_DIR)
+	@echo ""${BLUE}$(NAME)""${NC}Compiling... "\c"
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	@echo ""${GREEN}Complete""$(NC)""
 
 clean:
-	@rm -rf $(SRCOBJ)
+	@cd $(LIBFT_DIR) && $(MAKE) clean
+	@echo ""${BLUE}$(NAME)""${NC}Cleaning..."\c"
+	@$(RM) $(OBJ_DIR)
+	@echo ""${GREEN}Complete""$(NC)""
 
 fclean: clean
-	@rm -rf $(NAME)
-	@echo Cleaned Pipex!
+	@cd $(LIBFT_DIR) && $(MAKE) fclean
+	@$(RM) $(NAME)
 
 re: fclean all
 
+.PHONY: all clean fclean re
+
+# Colours
+WHITE	=	'\033[0;37m'
+YELLOW	=	'\033[0;33m'
+BLUE	=	'\033[0;34m'
+GREEN	=	'\033[0;32m'
+RED		=	'\033[0;31m'
+NC		=	'\033[0m' # no colour
+#> /dev/null
