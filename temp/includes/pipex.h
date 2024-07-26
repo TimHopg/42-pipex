@@ -42,7 +42,7 @@ struct					s_pipex
 	pid_t				pid;
 };
 
-//==================== Cleaning ===========================//
+//================== Cleaning =========================//
 void					error_msg(char *str);
 void					free_parent(t_pipex *pipx);
 void					free_pipes(t_pipex *pipex);

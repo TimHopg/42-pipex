@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/07/19 19:40:49 by thopgood         ###   ########.fr        #
+#    Updated: 2024/07/25 16:32:38 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ OBJ_DIR 	= obj/
 LIBFT_DIR 	= libft/
 LIBFT		= -L $(LIBFT_DIR) -lft
 
-SRC 		= 	pipex.c
+SRC 		= 	pipex.c \
+				parse_args.c
 
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
