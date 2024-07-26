@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/26 09:33:58 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:13:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	main(int ac, char **av)
 
 	// ft_bzero(&pipex, sizeof(pipex));
 	// parse_args(ac, av, &pipex);
+	// open_files(ac, av, &pipex);
 	// open_infile(ac, av, &pipex);
 	
 

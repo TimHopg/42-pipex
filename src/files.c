@@ -6,15 +6,26 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/25 17:14:26 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:24:26 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void open_infile(int ac, char **av, t_pipex *pipex)
+void open_outfile(int ac, char **av, t_pipex *pipex)
 {
 	(void)ac;
+	// ! check on linux if this can create a file
+	pipex->outfile_fd = open(av[ac - 1], O_RDWR | O_CREAT, 0644);
+	if (pipex->outfile_fd < 0)
+	{
+		perror(NULL);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void open_infile(char **av, t_pipex *pipex)
+{
 	if (pipex->is_here_doc)
 	{
 		(void)0;
@@ -28,4 +39,10 @@ void open_infile(int ac, char **av, t_pipex *pipex)
 			exit(EXIT_FAILURE);
 		}
 	}
+}
+
+void		open_files(int ac, char **av, t_pipex *pipex)
+{
+	open_infile(av, pipex);
+	open_outfile(ac, av, pipex);
 }

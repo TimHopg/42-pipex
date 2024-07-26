@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/25 18:12:46 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:18:01 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void	parse_args(int ac, char **av, t_pipex *pipex)
 		ft_putstr_fd(ERR_ARGS, 2);
 		exit(EXIT_FAILURE);
 	}
-	empty_string_check(ac, av);
+	empty_string_check(ac, av); // ! should this only check files? can it ignore cmds?
 	pipex->fork_total = ac - pipex->is_here_doc - 3;
 }

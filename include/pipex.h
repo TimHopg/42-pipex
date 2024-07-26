@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/25 17:14:35 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/26 12:14:46 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		parse_args(int ac, char **av, t_pipex *pipex);
-void		open_infile(int ac, char **av, t_pipex *pipex);
+void		open_files(int ac, char **av, t_pipex *pipex);
 
 #endif
