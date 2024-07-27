@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/26 12:14:46 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:22:49 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,22 @@
 // Errors
 # define ERR_ARGS "Too few arguments\n"
 # define ERR_INVALID_ARG "Invalid argument: Empty string\n"
+# define ERR_MALLOC "Malloc error\n"
 
 typedef struct s_pipex
 {
-	pid_t	*child_pids;
-	int		fork_total;
-	int		num_children;
-	int		is_here_doc;
 	int		infile_fd;
 	int		outfile_fd;
+	int		is_here_doc;
+	int		cmd_total;
+	int		pipe_total;
+	int		i;
+	int		prev_pipe[2];
+	int		curr_pipe[2];
+	int		pid;
+	char	**paths;
+	// int		num_children;
+	// pid_t	*child_pids;
 	// char				*env_path;
 	// char				**cmd_paths;
 	// char				*cmd;
@@ -51,6 +58,9 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		parse_args(int ac, char **av, t_pipex *pipex);
+void		parse_paths(t_pipex *pipex, char **envp);
 void		open_files(int ac, char **av, t_pipex *pipex);
+void		errno_handling(char *str, t_pipex *pipex);
+void		error_handling(char *str, t_pipex *pipex);
 
 #endif

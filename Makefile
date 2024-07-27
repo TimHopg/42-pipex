@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/07/25 16:32:38 by thopgood         ###   ########.fr        #
+#    Updated: 2024/07/27 14:29:12 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC 			= cc
 RM 			= rm -rf
 INCLUDE 	= -Iinclude
 
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE) -g -O0 # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE) -g # -O0 -fsanitize=address
 
 SRC_DIR 	= src/
 OBJ_DIR 	= obj/
@@ -24,7 +24,9 @@ LIBFT_DIR 	= libft/
 LIBFT		= -L $(LIBFT_DIR) -lft
 
 SRC 		= 	pipex.c \
-				parse_args.c
+				parse_args.c \
+				files.c \
+				error.c
 
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
