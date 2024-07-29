@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/27 18:51:16 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:07:54 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,146 +33,306 @@
  ? 
  */
 
-// void read_from_infile(char **av, t_pipex *pipex)
-// {
-// 	dup2(pipex->infile_fd, STDIN_FILENO);
-// 	close(pipex->infile_fd);
-
-// }
-
-
-void run_pipex(int ac, char **av, t_pipex *p)
+/* void execute2(t_pipex *p, int ac, char **av, char ** envp)
 {
 	(void)ac;
 	(void)av;
-	int status;
+	(void)envp;
+	int prev_fd;
 
-	char **arr;
-	arr = ft_split(av[2], ' '); // "cat -b"
-	pid_t child_pids[4];
+	prev_fd = p->infile_fd;
+	int pipe_fd[2];
 
-	while (p->i < p->cmd_total)
+	for (int i = 2; i < ac - 1; i++)
 	{
-		if (p->i < p->pipe_total)
-			if (pipe(p->curr_pipe) == -1)
-				errno_handling(NULL, p);
-
-
-
-		p->pid = fork();
-		if (p->pid == -1)
-			errno_handling(NULL, p);
-
-
-		child_pids[p->i] = p->pid;
-		ft_printf("pid: %d\n", child_pids[p->i]);
-
-		
-		if (p->pid == 0) // child process
+		if (i < ac - 2)
 		{
-
-
-
-			
-			if (p->i > 0) // inputs
-			{
-				if (dup2(p->prev_pipe[0], STDIN_FILENO) < 0)
-					errno_handling(NULL, p);
-				close(p->prev_pipe[0]);
-			}
-			else // first iteration
-			{
-				if (dup2(p->infile_fd, STDIN_FILENO) < 0)
-					errno_handling(NULL, p);
-				close(p->infile_fd);
-			}
-
-
-
-
-			if (p->i < p->pipe_total) // outputs
-			{
-				if (dup2(p->curr_pipe[1], STDOUT_FILENO) < 0)
-					errno_handling(NULL, p);
-				close(p->curr_pipe[0]);
-				close(p->curr_pipe[1]);
-			}
-			else
-			{
-				dup2(p->outfile_fd, STDOUT_FILENO);
-				close(p->outfile_fd);
-			}
-
-
-			// ft_printf("child count count:%d\n", p->i);
-			// execute program
-			execve("/bin/cat", arr, NULL);
-			errno_handling("exe, pcve", p);
-			exit(1);
+			pipe(pipe_fd);
 		}
-		
-		// Parent process
-		if (p->i > 0)
+		else
+			pipe_fd[1] = p->outfile_fd;
+
+		pid_t pid = fork(); // ! try putting outside for loop;
+		if (pid == 0)
 		{
-			close(p->prev_pipe[0]);
-			close(p->prev_pipe[1]);
+			if (i > 2)
+				close(prev_fd);
+			close(pipe_fd[0]);
+			if (prev_fd != STDIN_FILENO)
+			{
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (pipe_fd[1] != STDOUT_FILENO)
+			{
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[1]);
+			}
+			exec_command(p, i);
 		}
-		if (p->i < p->pipe_total) // for all but last iteration
+		else
 		{
-			p->prev_pipe[0] = p->curr_pipe[0];
-			p->prev_pipe[1] = p->curr_pipe[1];
+			wait(NULL);
+			close(prev_fd);
+			if (i < ac - 2)
+				close (pipe_fd[1]);
+			prev_fd = pipe_fd[0];
 		}
-		++(p->i);
+	}
+} */
+
+/* void execute(char **av, char **envp, t_pipex *p) // this works simple
+{
+	pid_t pid1;
+	pid_t pid2;
+	int pipefd[2];
+
+	pipe(pipefd);
+	pid1 = fork();
+
+	// while (p->i < p->pipe_total) // iterate until last command
+	// {
+	// 	if (p->i + p->is_here_doc )
+	// }
+
+	if (pid1 == 0)
+	{
+		dup2(p->infile_fd, STDIN_FILENO);
+		close(p->infile_fd);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[0]); // close unused read end
+		close(pipefd[1]); // close original write end
+		exec_command(p, av, envp, 2);
+		errno_handling("1", p);
+	}
+	pid2 = fork();
+	if (pid2 == 0)
+	{
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		dup2(p->outfile_fd, STDOUT_FILENO);
+		close(p->outfile_fd);
+		exec_command(p, av, envp, 3);
+		errno_handling("2", p);
 	}
 
+	// parent process
+	close(pipefd[0]);
+	close(pipefd[1]);
 
-	if (p->cmd_total > 1)
+	close(p->infile_fd);
+	close(p->outfile_fd);
+
+	wait(NULL); // use waitpid(-1 status etc)
+	wait(NULL);
+} */
+
+void dup2_both(int read_fd, int write_fd)
+{
+	if (read_fd != STDIN_FILENO)
 	{
-		close(p->prev_pipe[0]);
-		close(p->prev_pipe[1]);
+		dup2(read_fd, STDIN_FILENO);
+		close(read_fd);
 	}
-
-	// for (int x = 0; x < p->i; x++)
-	// {
-	// 	ft_printf("pid[%d]: %d\n", p->i, child_pids[p->i]);
-	// }
-
-	// wait for child processes
-
-	// for (int i = 0; i < p->cmd_total; i++) {
-	// 	waitpid(child_pids[p->i], &status, 0);
-	// 	// ft_printf("child closed\n");
-	// }
-
-	wait(&status);
-	printf("%d\n", WEXITSTATUS(status));
-	wait(&status);
-	printf("%d\n", WEXITSTATUS(status));
-	wait(&status);
-	printf("%d\n", WEXITSTATUS(status));
-	wait(&status);
-	printf("%d\n", WEXITSTATUS(status));
-
-
-
-	// int i = -1;
-	// 		// ft_printf("check\n");
-	// while (++i < p->cmd_total)
-	// {
-	// 	ft_printf("i:%d\n", i);
-	// 	wait(NULL);
-	// }
+	if (write_fd != STDOUT_FILENO)
+	{
+		dup2(write_fd, STDOUT_FILENO);
+		close(write_fd);
+	}
 }
 
+/* void process_fork(char **av, char **envp, t_pipex *p)
+{
+	(void)av;
+	(void)envp;
+	if (p->pid == 0)
+	{
+		ft_printf("check\n");
+		if (p->i > 1)
+			close(p->prevfd);
+		dup2_both(p->prevfd, p->pipefd[1]);
+		exec_command(p, p->i - 1);
+	}
+	else
+	{
+		wait(NULL); // waitpid
+		close(p->prevfd);
+		if (p->i <= p->pipe_total)
+			close(p->pipefd[1]);
+		p->prevfd = p->pipefd[0];
+	}
+} */
+
+// void execute(int ac, char **av, char **envp, t_pipex *p)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	(void)envp;
+// 	p->prevfd = p->infile_fd;
+// 	while (++p->i <= p->cmd_total) // iterate until and incl last command
+// 	{
+// 		if (p->i <= p->pipe_total) // create a pipe only when required
+// 		{
+// 			pipe(p->pipefd); // ! erro
+// 		}
+// 		else // on last iteration
+// 		{
+// 			ft_printf("i: %d\n", p->i);
+// 			p->pipefd[1] = p->outfile_fd;
+// 		}
+
+// 		p->pid = fork();
+// 		if (p->pid < 0)
+// 			errno_handling(NULL, p);
+
+// 		process_fork(av, envp, p);
+		
+// 		/* if (p->i == 2 + p->is_here_doc) // first iteration
+// 			dup2_both(p->infile_fd, pipe */
+// 	}
+
+// 	// if (pid1 == 0)
+// 	// {
+// 	// 	dup2(p->infile_fd, STDIN_FILENO);
+// 	// 	close(p->infile_fd);
+// 	// 	dup2(pipefd[1], STDOUT_FILENO);
+// 	// 	close(pipefd[0]); // close unused read end
+// 	// 	close(pipefd[1]); // close original write end
+// 	// 	exec_command(p, av, envp, 2);
+// 	// 	errno_handling("1", p);
+// 	// }
+// 	// pid2 = fork();
+// 	// if (pid2 == 0)
+// 	// {
+// 	// 	dup2(pipefd[0], STDIN_FILENO);
+// 	// 	close(pipefd[0]);
+// 	// 	close(pipefd[1]);
+// 	// 	dup2(p->outfile_fd, STDOUT_FILENO);
+// 	// 	close(p->outfile_fd);
+// 	// 	exec_command(p, av, envp, 3);
+// 	// 	errno_handling("2", p);
+// 	// }
+
+// 	// // parent process
+// 	// close(pipefd[0]);
+// 	// close(pipefd[1]);
+
+// 	// close(p->infile_fd);
+// 	// close(p->outfile_fd);
+
+// 	// wait(NULL); // use waitpid(-1 status etc)
+// 	// wait(NULL);
+// }
+
+/*
+ * Splits args from the arg_numth argument vector. Cycles through available
+ * paths appending the cmd name to each path name until a successful match is
+ * found then executes using execve(). 
+ ! If no successful path is found?
+ ! change from arg_num to p->i and test
+ */
+void execute_command(t_pipex *pipex, int arg_num)
+{
+	int i;
+
+	i = -1;
+	char *full_path;
+	// printf("args%s\n", pipex->args[arg_num]);
+	// ft_putstr_fd("tim\n", 2);
+	// dprintf(2, "check\n");
+	// ft_putstr_fd("check\n", 2);
+	pipex->args = ft_split(pipex->av[arg_num], ' '); // ! malloc
+	while (pipex->paths[++i])
+	{
+		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]); // ! malloc
+		if (access(full_path, X_OK) == 0)
+			{
+				// ft_printf("%s\n", full_path);
+				execve(full_path, pipex->args, pipex->envp);
+				free(full_path);
+				errno_handling(NULL, pipex);
+			}
+		free(full_path);
+	}
+	// ! command not found function goes here?
+}
+
+void fork_and_run(t_pipex *p)
+{
+	int prevfd;
+	int pipefd[2];
+
+	prevfd = p->infile_fd;
+	// ft_printf("i:%d pipe_total:%d\n", p->i, p->pipe_total);
+	while (++p->i < p->cmd_total)
+	{
+		pipe(pipefd);
+		pid_t pid = fork();
+
+		if (pid == 0)
+		{
+			close(pipefd[0]);
+
+			dup2(prevfd, STDIN_FILENO);
+			if (prevfd != STDIN_FILENO) // this could be STDIN if there was no infile
+				close(prevfd);
+			
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]); // needs no conditional since it's always a new fd (> 2)
+			execute_command(p, p->i + 1);
+			exit(1); // !
+		}
+
+		close(pipefd[1]);
+		if (prevfd != STDIN_FILENO)
+			close(prevfd);
+		prevfd = pipefd[0];
+	}
+
+	//last command
+	pid_t pid = fork();
+
+	if (pid == 0)
+	{
+		dup2(prevfd, STDIN_FILENO);
+		if (prevfd != STDIN_FILENO)
+			close(prevfd);
+		
+		dup2(p->outfile_fd, STDOUT_FILENO);
+		close(p->outfile_fd);
+
+		execute_command(p, p->i + 1);
+		exit(1); // !
+	}
+
+	if (prevfd != STDIN_FILENO)
+			close(prevfd);
+
+	while (wait(NULL) > 0);
+
+}
+
+
+void initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
+{
+	ft_bzero(pipex, sizeof(*pipex)); // initialises struct
+	pipex->ac = ac;
+	pipex->av = av;
+	pipex->envp = envp;
+}
 
 // TODO how to find PATH on different systems
 // TODO check on linux if outfile creates non existent file
 // TODO when creating pipes if later pipes fail, close the earlier ones
+// TODO when closing FDs, set FD to -1.
+// TODO does it overwrite file if it exists
 // ? don't quit when one pipe fails so the following ones still produce an
 // ?	output like piping to wc from a file that doesnt exist ( probably not a good idea)
 // ! You can create a pipe before each process. or a circular buffer of two 
 // !	pipes and reuse the same FDs
-
+// ! free args array after exec call? necessary or not?
+// ! having envp in the struct might permanently change the pointer in parse paths
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
@@ -180,19 +340,29 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	(void)envp;
-	ft_bzero(&pipex, sizeof(pipex));
-	parse_args(ac, av, &pipex);
-	open_files(ac, av, &pipex);
-	parse_paths(&pipex, envp);
-	errno_handling(NULL, &pipex);
+	// ft_bzero(&pipex, sizeof(pipex)); // initialises struct
+	initialise_pipex_struct(ac, av, envp, &pipex);
+	parse_args(&pipex); // validates args
+	open_files(&pipex); // opens file descriptors
+	parse_paths(&pipex); // creates array of paths
+
+	fork_and_run(&pipex);
+
+	// execute_command(&pipex, 2);
+
+	// execute(ac, av, envp, &pipex);
+	// execute2(&pipex, ac, av, envp);
+	
+
+	// run_pipex(av, envp, &pipex);
+	
+	// exec_command(&pipex, av, envp, 2);
+	// free_char_array(pipex.args); // ! i think this is necessary since it is not freed
+	// // ! before or maybe the exiting of a process clears the memory?
 
 
-	// for (int i = 0; envp[i]; i++)
-	// {
-	// 	ft_printf("%s\n", envp[i]);
-	// }
-
-	// run_pipex(ac, av, &pipex);
+	// run_pipex(ac, av, &pipex, envp);
+	// errno_handling(NULL, &pipex);
 
 	// int fd[2];
 	// pipe(fd);

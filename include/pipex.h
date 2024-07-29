@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/27 18:22:49 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:55:35 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HERE_DOC_LEN 9
 # define TRUE 1
 # define FALSE 0
 
@@ -32,16 +31,25 @@
 
 typedef struct s_pipex
 {
-	int		infile_fd;
-	int		outfile_fd;
+	int		ac;
+	char	**av;
+	char	**envp;
+	char	**args; // ! malloc
+	char	**paths; // ! malloc
 	int		is_here_doc;
 	int		cmd_total;
 	int		pipe_total;
 	int		i;
-	int		prev_pipe[2];
-	int		curr_pipe[2];
-	int		pid;
-	char	**paths;
+	int		infile_fd;
+	int		outfile_fd;
+
+	// int		prevfd;
+	// int		pipefd[2];
+	// int		pid;
+	
+	// int		prev_pipe[2];
+	// int		curr_pipe[2];
+
 	// int		num_children;
 	// pid_t	*child_pids;
 	// char				*env_path;
@@ -57,10 +65,11 @@ typedef struct s_pipex
 	// pid_t				pid;
 }			t_pipex;
 
-void		parse_args(int ac, char **av, t_pipex *pipex);
-void		parse_paths(t_pipex *pipex, char **envp);
-void		open_files(int ac, char **av, t_pipex *pipex);
+void		parse_args(t_pipex *pipex);
+void		parse_paths(t_pipex *pipex);
+void		open_files(t_pipex *pipex);
 void		errno_handling(char *str, t_pipex *pipex);
 void		error_handling(char *str, t_pipex *pipex);
+void		free_char_array(char **arr);
 
 #endif

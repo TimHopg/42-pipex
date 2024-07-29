@@ -6,37 +6,37 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/27 17:54:12 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:53:34 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void open_outfile(int ac, char **av, t_pipex *pipex)
+void	open_outfile(t_pipex *p)
 {
 	// ! check on linux if this can create a file
-	pipex->outfile_fd = open(av[ac - 1], O_RDWR | O_CREAT, 0644);
-	if (pipex->outfile_fd < 0)
-		errno_handling(NULL, pipex);
-
+	p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT, 0644);
+		// ! revise these
+	if (p->outfile_fd < 0)
+		errno_handling(NULL, p);
 }
 
-void open_infile(char **av, t_pipex *pipex)
+void	open_infile(t_pipex *p)
 {
-	if (pipex->is_here_doc)
+	if (p->is_here_doc)
 	{
 		(void)0; // !
 	}
 	else
 	{
-		pipex->infile_fd = open(av[1], O_RDONLY);
-		if (pipex->infile_fd < 0)
-			errno_handling(NULL, pipex);
+		p->infile_fd = open(p->av[1], O_RDONLY);
+		if (p->infile_fd < 0)
+			errno_handling(NULL, p);
 	}
 }
 
-void		open_files(int ac, char **av, t_pipex *pipex)
+void	open_files(t_pipex *p)
 {
-	open_outfile(ac, av, pipex);
-	open_infile(av, pipex);
+	open_outfile(p);
+	open_infile(p);
 }
