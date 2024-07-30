@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/29 23:02:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:25:04 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_pipex
 
 	int		pipefd[2];
 	int		prevfd;
+	pid_t	pid;
 
 	// int		prevfd;
 	// int		pipefd[2];

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 14:20:38 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:36:14 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,38 +253,35 @@ void execute_command(t_pipex *pipex, int arg_num)
 	// ! command not found function goes here?
 }
 
-void fork_and_run(t_pipex *p)
+void fork_loop(t_pipex *p)
 {
 	p->prevfd = p->infile_fd;
 	while (++p->i < p->cmd_total)
 	{
 		pipe(p->pipefd);
-		pid_t pid = fork();
-
-		if (pid == 0)
+		p->pid = fork();
+		if (p->pid == 0)
 		{
 			close(p->pipefd[0]);
-
 			dup2(p->prevfd, STDIN_FILENO);
 			if (p->prevfd != STDIN_FILENO) // this could be STDIN if there was no infile
 				close(p->prevfd);
-			
 			dup2(p->pipefd[1], STDOUT_FILENO);
 			close(p->pipefd[1]); // needs no conditional since it's always a new fd (> 2)
 			execute_command(p, p->i + 1);
 			exit(1); // !
 		}
-
 		close(p->pipefd[1]);
 		if (p->prevfd != STDIN_FILENO)
 			close(p->prevfd);
 		p->prevfd = p->pipefd[0];
 	}
+}
 
-	//last command
-	pid_t pid = fork();
-
-	if (pid == 0)
+void last_command(t_pipex *p)
+{
+	p->pid = fork();
+	if (p->pid == 0)
 	{
 		dup2(p->prevfd, STDIN_FILENO);
 		if (p->prevfd != STDIN_FILENO)
@@ -296,12 +293,15 @@ void fork_and_run(t_pipex *p)
 		execute_command(p, p->i + 1);
 		exit(1); // !
 	}
-
 	if (p->prevfd != STDIN_FILENO)
 			close(p->prevfd);
-
 	while (wait(NULL) > 0);
+}
 
+void execute_forks_and_pipes(t_pipex *p)
+{
+	fork_loop(p);
+	last_command(p);
 }
 
 
@@ -333,7 +333,7 @@ int	main(int ac, char **av, char **envp)
 	parse_args(&pipex); // validates args
 	open_files(&pipex); // opens file descriptors
 	parse_paths(&pipex); // creates array of paths
-	fork_and_run(&pipex);
+	execute_forks_and_pipes(&pipex);
 
 	// execute_command(&pipex, 2);
 
