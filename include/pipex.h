@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 15:29:28 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:49:10 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ typedef struct s_pipex
 	char **paths; // ! malloc
 	int		is_here_doc;
 	int		cmd_total;
-	// int		pipe_total;
 	int		i;
 	int		infile_fd;
 	int		outfile_fd;
-
 	int		pipefd[2];
 	int		prevfd;
 	pid_t	pid;
@@ -76,5 +74,6 @@ void		errno_handling(char *str, t_pipex *pipex);
 void		error_handling(char *str, t_pipex *pipex);
 void		free_char_array(char **arr);
 void		execute_forks_and_pipes(t_pipex *p);
+void		close_safe(int fd);
 
 #endif

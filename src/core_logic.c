@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 15:36:18 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:50:26 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	dup2_io(int read_fd, int write_fd)
 {
 	dup2(read_fd, STDIN_FILENO);
 	if (read_fd != STDIN_FILENO)
-		close(read_fd); // ! why?
+		close_safe(read_fd); // ! why?
 	dup2(write_fd, STDOUT_FILENO);
-	close(write_fd);
+	close_safe(write_fd);
 }
 
 /*
@@ -65,14 +65,14 @@ void	fork_loop(t_pipex *p)
 		p->pid = fork();
 		if (p->pid == 0)
 		{
-			close(p->pipefd[0]); // ! why?
+			close_safe(p->pipefd[0]); // ! why?
 			dup2_io(p->prevfd, p->pipefd[1]);
 			execute_command(p, p->i + 1);
 			exit(1); // !
 		}
-		close(p->pipefd[1]);
+		close_safe(p->pipefd[1]);
 		if (p->prevfd != STDIN_FILENO)
-			close(p->prevfd);
+			close_safe(p->prevfd);
 		p->prevfd = p->pipefd[0];
 	}
 }
@@ -90,7 +90,7 @@ void	last_command(t_pipex *p)
 		exit(1); // !
 	}
 	if (p->prevfd != STDIN_FILENO)
-		close(p->prevfd);
+		close_safe(p->prevfd);
 	while (wait(NULL) > 0)
 		;
 }

@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/07/30 14:54:31 by thopgood         ###   ########.fr        #
+#    Updated: 2024/07/30 15:52:21 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC 		= 	pipex.c \
 				core_logic.c \
 				parse_args.c \
 				files.c \
-				error.c
+				error.c \
+				pipex_utils.c
 
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
