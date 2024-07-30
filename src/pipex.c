@@ -6,120 +6,15 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 14:44:26 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:29:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*
- * Logic
- * pipex->i; (p->i)
- * while (pipex->i < pipex->cmd_total)
- * if (++(p->i)(?) == 0)
- * 	run infile to cmd 1
- * 	close(pipe[0][1]);
- * 	pipe[1][0]
- * if (i + 1 == cmd_total)
- * 	run outfile
- * else
- * 	int x = p-> i & 2
- * 	run cmd -> cmd process
- * 	pipe[x][0] = read pipe;
- * 	pipe[x][1] = write pipe;
- * 	close
- ? wait
- ? here_doc
- ? 
- */
-
-
-/*
- * Splits args from the arg_numth argument vector. Cycles through available
- * paths appending the cmd name to each path name until a successful match is
- * found then executes using execve(). 
- ! If no successful path is found?
- ! change from arg_num to p->i and test
- */
-void execute_command(t_pipex *pipex, int arg_num)
-{
-	int i;
-
-	i = -1;
-	char *full_path;
-	pipex->args = ft_split(pipex->av[arg_num], ' '); // ! malloc
-	while (pipex->paths[++i])
-	{
-		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]); // ! malloc
-		if (access(full_path, X_OK) == 0)
-			{
-				execve(full_path, pipex->args, pipex->envp);
-				free(full_path);
-				errno_handling(NULL, pipex);
-			}
-		free(full_path);
-	}
-	// ! command not found function goes here?
-}
-
-/*
- * Sets STDIN to read_fd and STDOUT to write_fd. 
- ! why?
- */
-void dup2_io(int read_fd, int write_fd)
-{
-	dup2(read_fd, STDIN_FILENO);
-	if (read_fd != STDIN_FILENO)
-		close(read_fd); // ! why?
-	dup2(write_fd, STDOUT_FILENO);
-	close(write_fd);
-}
-
-void fork_loop(t_pipex *p)
-{
-	p->prevfd = p->infile_fd;
-	while (++p->i < p->cmd_total)
-	{
-		pipe(p->pipefd);
-		p->pid = fork();
-		if (p->pid == 0)
-		{
-			close(p->pipefd[0]); // ! why?
-			dup2_io(p->prevfd, p->pipefd[1]);
-			execute_command(p, p->i + 1);
-			exit(1); // !
-		}
-		close(p->pipefd[1]);
-		if (p->prevfd != STDIN_FILENO)
-			close(p->prevfd);
-		p->prevfd = p->pipefd[0];
-	}
-}
-
-void last_command(t_pipex *p)
-{
-	p->pid = fork();
-	if (p->pid == 0)
-	{
-		dup2_io(p->prevfd, p->outfile_fd);
-		execute_command(p, p->i + 1);
-		exit(1); // !
-	}
-	if (p->prevfd != STDIN_FILENO)
-			close(p->prevfd);
-	while (wait(NULL) > 0);
-}
-
-void execute_forks_and_pipes(t_pipex *p)
-{
-	fork_loop(p);
-	last_command(p);
-}
-
-
 void initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 {
-	ft_bzero(pipex, sizeof(*pipex)); // initialises struct
+	ft_bzero(pipex, sizeof(*pipex));
 	pipex->ac = ac;
 	pipex->av = av;
 	pipex->envp = envp;
@@ -138,6 +33,7 @@ void initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // !	pipes and reuse the same FDs
 // ! free args array after exec call? necessary or not?
 // ! having envp in the struct might permanently change the pointer in parse paths
+// TODO separate bonus
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
