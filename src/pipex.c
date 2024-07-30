@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/29 21:07:54 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:20:38 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,17 +238,12 @@ void execute_command(t_pipex *pipex, int arg_num)
 
 	i = -1;
 	char *full_path;
-	// printf("args%s\n", pipex->args[arg_num]);
-	// ft_putstr_fd("tim\n", 2);
-	// dprintf(2, "check\n");
-	// ft_putstr_fd("check\n", 2);
 	pipex->args = ft_split(pipex->av[arg_num], ' '); // ! malloc
 	while (pipex->paths[++i])
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]); // ! malloc
 		if (access(full_path, X_OK) == 0)
 			{
-				// ft_printf("%s\n", full_path);
 				execve(full_path, pipex->args, pipex->envp);
 				free(full_path);
 				errno_handling(NULL, pipex);
@@ -260,34 +255,30 @@ void execute_command(t_pipex *pipex, int arg_num)
 
 void fork_and_run(t_pipex *p)
 {
-	int prevfd;
-	int pipefd[2];
-
-	prevfd = p->infile_fd;
-	// ft_printf("i:%d pipe_total:%d\n", p->i, p->pipe_total);
+	p->prevfd = p->infile_fd;
 	while (++p->i < p->cmd_total)
 	{
-		pipe(pipefd);
+		pipe(p->pipefd);
 		pid_t pid = fork();
 
 		if (pid == 0)
 		{
-			close(pipefd[0]);
+			close(p->pipefd[0]);
 
-			dup2(prevfd, STDIN_FILENO);
-			if (prevfd != STDIN_FILENO) // this could be STDIN if there was no infile
-				close(prevfd);
+			dup2(p->prevfd, STDIN_FILENO);
+			if (p->prevfd != STDIN_FILENO) // this could be STDIN if there was no infile
+				close(p->prevfd);
 			
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]); // needs no conditional since it's always a new fd (> 2)
+			dup2(p->pipefd[1], STDOUT_FILENO);
+			close(p->pipefd[1]); // needs no conditional since it's always a new fd (> 2)
 			execute_command(p, p->i + 1);
 			exit(1); // !
 		}
 
-		close(pipefd[1]);
-		if (prevfd != STDIN_FILENO)
-			close(prevfd);
-		prevfd = pipefd[0];
+		close(p->pipefd[1]);
+		if (p->prevfd != STDIN_FILENO)
+			close(p->prevfd);
+		p->prevfd = p->pipefd[0];
 	}
 
 	//last command
@@ -295,9 +286,9 @@ void fork_and_run(t_pipex *p)
 
 	if (pid == 0)
 	{
-		dup2(prevfd, STDIN_FILENO);
-		if (prevfd != STDIN_FILENO)
-			close(prevfd);
+		dup2(p->prevfd, STDIN_FILENO);
+		if (p->prevfd != STDIN_FILENO)
+			close(p->prevfd);
 		
 		dup2(p->outfile_fd, STDOUT_FILENO);
 		close(p->outfile_fd);
@@ -306,8 +297,8 @@ void fork_and_run(t_pipex *p)
 		exit(1); // !
 	}
 
-	if (prevfd != STDIN_FILENO)
-			close(prevfd);
+	if (p->prevfd != STDIN_FILENO)
+			close(p->prevfd);
 
 	while (wait(NULL) > 0);
 
@@ -327,6 +318,8 @@ void initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO when creating pipes if later pipes fail, close the earlier ones
 // TODO when closing FDs, set FD to -1.
 // TODO does it overwrite file if it exists
+// TODO Temp2 for potential errors
+// TODO sometimes appends to outfile?! maybe the way outfile is created? Done I think
 // ? don't quit when one pipe fails so the following ones still produce an
 // ?	output like piping to wc from a file that doesnt exist ( probably not a good idea)
 // ! You can create a pipe before each process. or a circular buffer of two 
@@ -336,16 +329,10 @@ void initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
-
-	(void)ac;
-	(void)av;
-	(void)envp;
-	// ft_bzero(&pipex, sizeof(pipex)); // initialises struct
 	initialise_pipex_struct(ac, av, envp, &pipex);
 	parse_args(&pipex); // validates args
 	open_files(&pipex); // opens file descriptors
 	parse_paths(&pipex); // creates array of paths
-
 	fork_and_run(&pipex);
 
 	// execute_command(&pipex, 2);
