@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 14:36:14 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:44:26 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,197 +33,6 @@
  ? 
  */
 
-/* void execute2(t_pipex *p, int ac, char **av, char ** envp)
-{
-	(void)ac;
-	(void)av;
-	(void)envp;
-	int prev_fd;
-
-	prev_fd = p->infile_fd;
-	int pipe_fd[2];
-
-	for (int i = 2; i < ac - 1; i++)
-	{
-		if (i < ac - 2)
-		{
-			pipe(pipe_fd);
-		}
-		else
-			pipe_fd[1] = p->outfile_fd;
-
-		pid_t pid = fork(); // ! try putting outside for loop;
-		if (pid == 0)
-		{
-			if (i > 2)
-				close(prev_fd);
-			close(pipe_fd[0]);
-			if (prev_fd != STDIN_FILENO)
-			{
-				dup2(prev_fd, STDIN_FILENO);
-				close(prev_fd);
-			}
-			if (pipe_fd[1] != STDOUT_FILENO)
-			{
-				dup2(pipe_fd[1], STDOUT_FILENO);
-				close(pipe_fd[1]);
-			}
-			exec_command(p, i);
-		}
-		else
-		{
-			wait(NULL);
-			close(prev_fd);
-			if (i < ac - 2)
-				close (pipe_fd[1]);
-			prev_fd = pipe_fd[0];
-		}
-	}
-} */
-
-/* void execute(char **av, char **envp, t_pipex *p) // this works simple
-{
-	pid_t pid1;
-	pid_t pid2;
-	int pipefd[2];
-
-	pipe(pipefd);
-	pid1 = fork();
-
-	// while (p->i < p->pipe_total) // iterate until last command
-	// {
-	// 	if (p->i + p->is_here_doc )
-	// }
-
-	if (pid1 == 0)
-	{
-		dup2(p->infile_fd, STDIN_FILENO);
-		close(p->infile_fd);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]); // close unused read end
-		close(pipefd[1]); // close original write end
-		exec_command(p, av, envp, 2);
-		errno_handling("1", p);
-	}
-	pid2 = fork();
-	if (pid2 == 0)
-	{
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		dup2(p->outfile_fd, STDOUT_FILENO);
-		close(p->outfile_fd);
-		exec_command(p, av, envp, 3);
-		errno_handling("2", p);
-	}
-
-	// parent process
-	close(pipefd[0]);
-	close(pipefd[1]);
-
-	close(p->infile_fd);
-	close(p->outfile_fd);
-
-	wait(NULL); // use waitpid(-1 status etc)
-	wait(NULL);
-} */
-
-void dup2_both(int read_fd, int write_fd)
-{
-	if (read_fd != STDIN_FILENO)
-	{
-		dup2(read_fd, STDIN_FILENO);
-		close(read_fd);
-	}
-	if (write_fd != STDOUT_FILENO)
-	{
-		dup2(write_fd, STDOUT_FILENO);
-		close(write_fd);
-	}
-}
-
-/* void process_fork(char **av, char **envp, t_pipex *p)
-{
-	(void)av;
-	(void)envp;
-	if (p->pid == 0)
-	{
-		ft_printf("check\n");
-		if (p->i > 1)
-			close(p->prevfd);
-		dup2_both(p->prevfd, p->pipefd[1]);
-		exec_command(p, p->i - 1);
-	}
-	else
-	{
-		wait(NULL); // waitpid
-		close(p->prevfd);
-		if (p->i <= p->pipe_total)
-			close(p->pipefd[1]);
-		p->prevfd = p->pipefd[0];
-	}
-} */
-
-// void execute(int ac, char **av, char **envp, t_pipex *p)
-// {
-// 	(void)ac;
-// 	(void)av;
-// 	(void)envp;
-// 	p->prevfd = p->infile_fd;
-// 	while (++p->i <= p->cmd_total) // iterate until and incl last command
-// 	{
-// 		if (p->i <= p->pipe_total) // create a pipe only when required
-// 		{
-// 			pipe(p->pipefd); // ! erro
-// 		}
-// 		else // on last iteration
-// 		{
-// 			ft_printf("i: %d\n", p->i);
-// 			p->pipefd[1] = p->outfile_fd;
-// 		}
-
-// 		p->pid = fork();
-// 		if (p->pid < 0)
-// 			errno_handling(NULL, p);
-
-// 		process_fork(av, envp, p);
-		
-// 		/* if (p->i == 2 + p->is_here_doc) // first iteration
-// 			dup2_both(p->infile_fd, pipe */
-// 	}
-
-// 	// if (pid1 == 0)
-// 	// {
-// 	// 	dup2(p->infile_fd, STDIN_FILENO);
-// 	// 	close(p->infile_fd);
-// 	// 	dup2(pipefd[1], STDOUT_FILENO);
-// 	// 	close(pipefd[0]); // close unused read end
-// 	// 	close(pipefd[1]); // close original write end
-// 	// 	exec_command(p, av, envp, 2);
-// 	// 	errno_handling("1", p);
-// 	// }
-// 	// pid2 = fork();
-// 	// if (pid2 == 0)
-// 	// {
-// 	// 	dup2(pipefd[0], STDIN_FILENO);
-// 	// 	close(pipefd[0]);
-// 	// 	close(pipefd[1]);
-// 	// 	dup2(p->outfile_fd, STDOUT_FILENO);
-// 	// 	close(p->outfile_fd);
-// 	// 	exec_command(p, av, envp, 3);
-// 	// 	errno_handling("2", p);
-// 	// }
-
-// 	// // parent process
-// 	// close(pipefd[0]);
-// 	// close(pipefd[1]);
-
-// 	// close(p->infile_fd);
-// 	// close(p->outfile_fd);
-
-// 	// wait(NULL); // use waitpid(-1 status etc)
-// 	// wait(NULL);
-// }
 
 /*
  * Splits args from the arg_numth argument vector. Cycles through available
@@ -253,6 +62,19 @@ void execute_command(t_pipex *pipex, int arg_num)
 	// ! command not found function goes here?
 }
 
+/*
+ * Sets STDIN to read_fd and STDOUT to write_fd. 
+ ! why?
+ */
+void dup2_io(int read_fd, int write_fd)
+{
+	dup2(read_fd, STDIN_FILENO);
+	if (read_fd != STDIN_FILENO)
+		close(read_fd); // ! why?
+	dup2(write_fd, STDOUT_FILENO);
+	close(write_fd);
+}
+
 void fork_loop(t_pipex *p)
 {
 	p->prevfd = p->infile_fd;
@@ -262,12 +84,8 @@ void fork_loop(t_pipex *p)
 		p->pid = fork();
 		if (p->pid == 0)
 		{
-			close(p->pipefd[0]);
-			dup2(p->prevfd, STDIN_FILENO);
-			if (p->prevfd != STDIN_FILENO) // this could be STDIN if there was no infile
-				close(p->prevfd);
-			dup2(p->pipefd[1], STDOUT_FILENO);
-			close(p->pipefd[1]); // needs no conditional since it's always a new fd (> 2)
+			close(p->pipefd[0]); // ! why?
+			dup2_io(p->prevfd, p->pipefd[1]);
 			execute_command(p, p->i + 1);
 			exit(1); // !
 		}
@@ -283,13 +101,7 @@ void last_command(t_pipex *p)
 	p->pid = fork();
 	if (p->pid == 0)
 	{
-		dup2(p->prevfd, STDIN_FILENO);
-		if (p->prevfd != STDIN_FILENO)
-			close(p->prevfd);
-		
-		dup2(p->outfile_fd, STDOUT_FILENO);
-		close(p->outfile_fd);
-
+		dup2_io(p->prevfd, p->outfile_fd);
 		execute_command(p, p->i + 1);
 		exit(1); // !
 	}
