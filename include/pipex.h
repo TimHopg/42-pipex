@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 15:49:10 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:35:52 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define ERR_ARGS "Too few arguments\n"
 # define ERR_INVALID_ARG "Invalid argument: Empty string\n"
 # define ERR_MALLOC "Malloc error\n"
+#define ERR_CMDNOTFOUND ": command not found\n"
 
 typedef struct s_pipex
 {
@@ -44,36 +45,16 @@ typedef struct s_pipex
 	int		pipefd[2];
 	int		prevfd;
 	pid_t	pid;
-
-	// int		prevfd;
-	// int		pipefd[2];
-	// int		pid;
-
-	// int		prev_pipe[2];
-	// int		curr_pipe[2];
-
-	// int		num_children;
-	// pid_t	*child_pids;
-	// char				*env_path;
-	// char				**cmd_paths;
-	// char				*cmd;
-	// char				**cmd_args;
-	// int					outfile;
-	// int					here_doc;
-	// int					cmd_nbr;
-	// int					pipe_nbr;
-	// int					*pipes;
-	// int					id_n;
-	// pid_t				pid;
 }			t_pipex;
 
 void		parse_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
 void		open_files(t_pipex *pipex);
+void		execute_forks_and_pipes(t_pipex *p);
 void		errno_handling(char *str, t_pipex *pipex);
 void		error_handling(char *str, t_pipex *pipex);
 void		free_char_array(char **arr);
-void		execute_forks_and_pipes(t_pipex *p);
 void		close_safe(int fd);
+void		free_all(t_pipex *pipex);
 
 #endif

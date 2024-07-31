@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 15:50:26 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:07:32 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ void	execute_command(t_pipex *pipex, int arg_num)
 	char	*full_path;
 
 	i = -1;
-	pipex->args = ft_split(pipex->av[arg_num], ' '); // ! malloc
+	pipex->args = ft_split(pipex->av[arg_num], ' ');
+	if (pipex->args == NULL)
+		error_handling(ERR_MALLOC, pipex);
 	while (pipex->paths[++i])
 	{
-		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]); // ! malloc
+		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
+		if (full_path == NULL)
+			error_handling(ERR_MALLOC, pipex);
 		if (access(full_path, X_OK) == 0)
 		{
 			execve(full_path, pipex->args, pipex->envp);
@@ -37,7 +41,8 @@ void	execute_command(t_pipex *pipex, int arg_num)
 		}
 		free(full_path);
 	}
-	// ! command not found function goes here?
+	write(2, pipex->args[0], ft_strlen(pipex->args[0]));
+	error_handling(ERR_CMDNOTFOUND, pipex);
 }
 
 /*
@@ -91,8 +96,7 @@ void	last_command(t_pipex *p)
 	}
 	if (p->prevfd != STDIN_FILENO)
 		close_safe(p->prevfd);
-	while (wait(NULL) > 0)
-		;
+	while (wait(NULL) > 0); // !
 }
 
 void	execute_forks_and_pipes(t_pipex *p)

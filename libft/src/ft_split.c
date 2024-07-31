@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:34:02 by thopgood          #+#    #+#             */
-/*   Updated: 2024/06/15 00:57:06 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:08:20 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
  * Splits string 's' by delimiter char 'c' and mallocs array of new strings.
  * Returns array terminated with NULL pointer. NULL if fails
  */
-
 static size_t	ft_countwords(char const *str, char const *set)
 {
 	size_t	word_count;

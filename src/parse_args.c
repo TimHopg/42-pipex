@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 15:33:50 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:04:31 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,22 @@ void	parse_args(t_pipex *p)
 			error_handling(ERR_ARGS, p);
 		p->is_here_doc = TRUE;
 	}
-	empty_string_check(p); // ! should this only check files? can it ignore cmds?
+	empty_string_check(p);
+	// ! should this only check files? can it ignore cmds?
 	p->cmd_total = p->ac - p->is_here_doc - 3;
-	// p->pipe_total = p->ac - p->is_here_doc - 4;
 	p->i += p->is_here_doc;
 }
 
 /*
  * Adds slash to end of path if it doesn't already exist
  */
-void add_slash(char **paths)
+void	add_slash(char **paths)
 {
-	int i;
+	int		i;
+	char	*temp;
 
 	i = -1;
-	char *temp;
-	while(paths[++i])
+	while (paths[++i])
 	{
 		if (paths[i][ft_strlen(paths[i]) - 1] != '/')
 		{
@@ -73,14 +73,14 @@ void add_slash(char **paths)
  * separates them by colon and adds them to array of strings 'path' in
  * struct.
  */
-void parse_paths(t_pipex *p)
+void	parse_paths(t_pipex *p)
 {
-	int i;
+	int	i;
+	int	path_len;
 
 	i = 0;
-	int path_len;
 	path_len = ft_strlen("PATH=");
-	while(p->envp[i] && ft_strncmp(p->envp[i], "PATH=", path_len) != 0)
+	while (p->envp[i] && ft_strncmp(p->envp[i], "PATH=", path_len) != 0)
 		i++;
 	p->paths = ft_split(p->envp[i] + path_len, ':');
 	add_slash(p->paths);
