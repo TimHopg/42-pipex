@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 16:01:51 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 13:15:11 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ void	open_outfile(t_pipex *p)
 void	open_infile(t_pipex *p)
 {
 	if (p->is_here_doc)
-	{
-		(void)0; // !
-	}
+		return; // !
 	else
 	{
 		p->infile_fd = open(p->av[1], O_RDONLY);
 		if (p->infile_fd < 0)
-			errno_handling(NULL, p);
+			errno_handling(p->av[1], p);
 	}
 }
 
