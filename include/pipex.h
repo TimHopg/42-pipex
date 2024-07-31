@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 17:35:52 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:00:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 # define ERR_ARGS "Too few arguments\n"
 # define ERR_INVALID_ARG "Invalid argument: Empty string\n"
 # define ERR_MALLOC "Malloc error\n"
-#define ERR_CMDNOTFOUND ": command not found\n"
+# define ERR_CMDNOTFOUND "command not found\n"
+# define ERR_NOFILE "No such file or directory\n"
 
 typedef struct s_pipex
 {
@@ -45,6 +46,7 @@ typedef struct s_pipex
 	int		pipefd[2];
 	int		prevfd;
 	pid_t	pid;
+	char	*shell;
 }			t_pipex;
 
 void		parse_args(t_pipex *pipex);
@@ -52,9 +54,10 @@ void		parse_paths(t_pipex *pipex);
 void		open_files(t_pipex *pipex);
 void		execute_forks_and_pipes(t_pipex *p);
 void		errno_handling(char *str, t_pipex *pipex);
-void		error_handling(char *str, t_pipex *pipex);
+void		error_handling(char *var_str, char *err_str, t_pipex *pipex);
 void		free_char_array(char **arr);
 void		close_safe(int fd);
 void		free_all(t_pipex *pipex);
+int			ret_arr_index(char **arr, char *str);
 
 #endif

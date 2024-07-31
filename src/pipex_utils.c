@@ -6,11 +6,28 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:48:32 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/30 16:41:42 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:36:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+/*
+ * returns the index of array that matches str or -1 if not found.
+ */
+int	ret_arr_index(char **arr, char *str)
+{
+	int	i;
+	int	str_len;
+
+	i = 0;
+	str_len = ft_strlen(str);
+	while (arr[i] && ft_strncmp(arr[i], str, str_len) != 0)
+		i++;
+	if (arr[i] == NULL)
+		return (-1);
+	return (i);
+}
 
 /*
  * Closes fd and then sets it to -1.

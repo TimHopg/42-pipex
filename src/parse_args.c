@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 13:52:46 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:12:02 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	empty_string_check(t_pipex *pipex)
 	while (++i < pipex->ac)
 	{
 		if (!pipex->av[i][0])
-			error_handling(ERR_INVALID_ARG, pipex);
+			error_handling(NULL, ERR_INVALID_ARG, pipex);
 	}
 }
 
@@ -35,11 +35,11 @@ void	empty_string_check(t_pipex *pipex)
 void	parse_args(t_pipex *p)
 {
 	if (p->ac < 5)
-		error_handling(ERR_ARGS, p);
+		error_handling(NULL, ERR_ARGS, p);
 	else if (!ft_strncmp(p->av[1], "here_doc", 9))
 	{
 		if (p->ac < 6)
-			error_handling(ERR_ARGS, p);
+			error_handling(NULL, ERR_ARGS, p);
 		p->is_here_doc = TRUE;
 	}
 	empty_string_check(p);
@@ -76,12 +76,12 @@ void	add_slash(char **paths)
 void	parse_paths(t_pipex *p)
 {
 	int	i;
-	int	path_len;
+	int path_len;
 
-	i = 0;
 	path_len = ft_strlen("PATH=");
-	while (p->envp[i] && ft_strncmp(p->envp[i], "PATH=", path_len) != 0)
-		i++;
+	i = ret_arr_index(p->envp, "PATH=");
+	if (i < 0)
+		error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p);
 	p->paths = ft_split(p->envp[i] + path_len, ':');
 	add_slash(p->paths);
 }
