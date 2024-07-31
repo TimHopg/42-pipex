@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 13:53:41 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 14:00:45 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
  ! If no successful path is found?
  ! change from arg_num to p->i and test
  */
-void	execute_command(t_pipex *pipex, int arg_num)
+void	execute_command(t_pipex *pipex)
 {
 	int		i;
 	char	*full_path;
 
 	i = -1;
-	pipex->args = ft_split(pipex->av[arg_num], ' ');
+	pipex->args = ft_split(pipex->av[pipex->i], ' ');
 	if (pipex->args == NULL)
 		error_handling(ERR_MALLOC, pipex);
 	while (pipex->paths[++i])
@@ -72,7 +72,7 @@ void	fork_loop(t_pipex *p)
 		{
 			close_safe(p->pipefd[0]); // ! why?
 			dup2_io(p->prevfd, p->pipefd[1]);
-			execute_command(p, p->i);
+			execute_command(p);
 			exit(1); // !
 		}
 		close_safe(p->pipefd[1]);
@@ -91,7 +91,7 @@ void	last_command(t_pipex *p)
 	if (p->pid == 0)
 	{
 		dup2_io(p->prevfd, p->outfile_fd);
-		execute_command(p, p->i);
+		execute_command(p);
 		exit(1); // !
 	}
 	if (p->prevfd != STDIN_FILENO)
