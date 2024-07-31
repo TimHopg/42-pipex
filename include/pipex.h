@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 17:14:00 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:16:05 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,22 @@ typedef struct s_pipex
 	int		pipefd[2];
 	int		prevfd;
 	pid_t	pid;
+	pid_t	last_pid;
+	int		last_status;
+	// int 	exit_status;
 }			t_pipex;
 
 void		parse_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
 void		open_files(t_pipex *pipex);
 void		execute_pipex(t_pipex *p);
-void		errno_handling(char *str, t_pipex *pipex);
-void		error_handling(char *var_str, char *err_str, t_pipex *pipex);
+void		errno_handling(char *str, t_pipex *pipex, int exit_status);
+void		error_handling(char *var_str, char *err_str, t_pipex *pipex,
+				int exit_status);
 void		free_char_array(char **arr);
 void		close_safe(int fd);
 void		free_all(t_pipex *pipex);
 int			ret_arr_index(char **arr, char *str);
+void		dup2_io(int read_fd, int write_fd);
 
 #endif

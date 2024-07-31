@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:17:46 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 17:02:04 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:16:27 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 /*
  * Handles errors where errno is set
  */
-void	errno_handling(char *str, t_pipex *pipex)
+void	errno_handling(char *str, t_pipex *pipex, int exit_status)
 {
 	perror(str);
 	free_all(pipex);
-	exit(EXIT_FAILURE);
+	exit(exit_status);
 }
 
 /*
  * Handles errors where errno is not set
  */
-void	error_handling(char *var_str, char *err_str, t_pipex *pipex)
+void	error_handling(char *var_str, char *err_str, t_pipex *pipex,
+		int exit_status)
 {
 	write(2, "bash: ", 6);
 	if (var_str)
@@ -35,5 +36,5 @@ void	error_handling(char *var_str, char *err_str, t_pipex *pipex)
 	}
 	ft_putstr_fd(err_str, 2);
 	free_all(pipex);
-	exit(EXIT_FAILURE);
+	exit(exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 17:03:19 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 23:58:36 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO separate bonus
 // ? is it necessary to free malloc'd memory after an exec call?
 // TODO check every failure for leaks or fd leaks
+// TODO waitpid()
 
 int	main(int ac, char **av, char **envp)
 {
@@ -45,4 +46,5 @@ int	main(int ac, char **av, char **envp)
 	parse_paths(&pipex); // creates array of paths
 	execute_pipex(&pipex);
 	free_all(&pipex);
+	exit(pipex.last_status);
 }

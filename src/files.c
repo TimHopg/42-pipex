@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 13:15:11 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:13:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	open_outfile(t_pipex *p)
 	p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	// ! revise these
 	if (p->outfile_fd < 0)
-		errno_handling(NULL, p);
+		errno_handling(NULL, p, EXIT_FAILURE);
 }
 
 void	open_infile(t_pipex *p)
@@ -30,7 +30,12 @@ void	open_infile(t_pipex *p)
 	{
 		p->infile_fd = open(p->av[1], O_RDONLY);
 		if (p->infile_fd < 0)
-			errno_handling(p->av[1], p);
+		{
+			perror(NULL);
+			p->infile_fd = open("/dev/null", O_RDONLY);
+			if (p->infile_fd == -1)
+				errno_handling(p->av[1], p, EXIT_FAILURE);
+		}
 	}
 }
 

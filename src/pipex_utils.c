@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:48:32 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 15:36:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 23:31:01 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,17 @@ void free_all(t_pipex *pipex)
 	free_char_array(pipex->paths);
 	close_safe(pipex->infile_fd);
 	close_safe(pipex->outfile_fd);
+}
+
+/*
+ * Sets STDIN to read_fd and STDOUT to write_fd.
+ ! why?
+ */
+void	dup2_io(int read_fd, int write_fd)
+{
+	dup2(read_fd, STDIN_FILENO);
+	if (read_fd != STDIN_FILENO)
+		close_safe(read_fd); // ! why?
+	dup2(write_fd, STDOUT_FILENO);
+	close_safe(write_fd);
 }

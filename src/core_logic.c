@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 17:03:16 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:17:01 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,21 @@ void	execute_command(t_pipex *pipex)
 	i = -1;
 	pipex->args = ft_split(pipex->av[pipex->i], ' ');
 	if (pipex->args == NULL)
-		error_handling(NULL, ERR_MALLOC, pipex);
+		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 	while (pipex->paths[++i])
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
 		if (full_path == NULL)
-			error_handling(NULL, ERR_MALLOC, pipex);
+			error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 		if (access(full_path, X_OK) == 0)
 		{
 			execve(full_path, pipex->args, pipex->envp);
 			free(full_path);
-			errno_handling(NULL, pipex);
+			errno_handling(NULL, pipex, EXIT_FAILURE);
 		}
 		free(full_path);
 	}
-	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex);
-}
-
-/*
- * Sets STDIN to read_fd and STDOUT to write_fd.
- ! why?
- */
-void	dup2_io(int read_fd, int write_fd)
-{
-	dup2(read_fd, STDIN_FILENO);
-	if (read_fd != STDIN_FILENO)
-		close_safe(read_fd); // ! why?
-	dup2(write_fd, STDOUT_FILENO);
-	close_safe(write_fd);
+	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }
 
 /*
@@ -81,13 +68,30 @@ void	fork_loop(t_pipex *p)
 	}
 }
 
+void wait_children(t_pipex *pipex)
+{
+	int i;
+	int status;
+	int pid;
+
+	i = -1;
+	while (++i < pipex->cmd_total)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == pipex->last_pid)
+			pipex->last_status = WEXITSTATUS(status);
+		if (pid == -1)
+			errno_handling(NULL, pipex, status);
+	}
+}
+
 /*
  * Handles last iteration of pipex to redirect output to outfile.
  */
 void	last_command(t_pipex *p)
 {
-	p->pid = fork();
-	if (p->pid == 0)
+	p->last_pid = fork();
+	if (p->last_pid == 0)
 	{
 		dup2_io(p->prevfd, p->outfile_fd);
 		execute_command(p);
@@ -95,11 +99,11 @@ void	last_command(t_pipex *p)
 	}
 	if (p->prevfd != STDIN_FILENO)
 		close_safe(p->prevfd);
-	while (wait(NULL) > 0); // !
 }
 
 void	execute_pipex(t_pipex *p)
 {
 	fork_loop(p);
 	last_command(p);
+	wait_children(p);
 }

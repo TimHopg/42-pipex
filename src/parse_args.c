@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 17:03:24 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 00:17:27 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	empty_string_check(t_pipex *pipex)
 	while (++i < pipex->ac)
 	{
 		if (!pipex->av[i][0])
-			error_handling(NULL, ERR_INVALID_ARG, pipex);
+			error_handling(NULL, ERR_INVALID_ARG, pipex, EXIT_FAILURE);
 	}
 }
 
@@ -35,11 +35,11 @@ void	empty_string_check(t_pipex *pipex)
 void	parse_args(t_pipex *p)
 {
 	if (p->ac < 5)
-		error_handling(NULL, ERR_ARGS, p);
+		error_handling(NULL, ERR_ARGS, p, EXIT_FAILURE);
 	else if (!ft_strncmp(p->av[1], "here_doc", 9))
 	{
 		if (p->ac < 6)
-			error_handling(NULL, ERR_ARGS, p);
+			error_handling(NULL, ERR_ARGS, p, EXIT_FAILURE);
 		p->is_here_doc = TRUE;
 	}
 	empty_string_check(p);
@@ -81,7 +81,7 @@ void	parse_paths(t_pipex *p)
 	path_len = ft_strlen("PATH=");
 	i = ret_arr_index(p->envp, "PATH=");
 	if (i < 0)
-		error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p);
+		error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p, EXIT_FAILURE);
 	p->paths = ft_split(p->envp[i] + path_len, ':');
 	add_slash(p->paths);
 }
