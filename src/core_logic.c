@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 13:44:21 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 13:53:41 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	dup2_io(int read_fd, int write_fd)
 void	fork_loop(t_pipex *p)
 {
 	p->prevfd = p->infile_fd;
-	while (++p->i < p->cmd_total)
+	while (++p->i <= p->cmd_total)
 	{
 		pipe(p->pipefd);
 		p->pid = fork();
@@ -72,7 +72,7 @@ void	fork_loop(t_pipex *p)
 		{
 			close_safe(p->pipefd[0]); // ! why?
 			dup2_io(p->prevfd, p->pipefd[1]);
-			execute_command(p, p->i + 1);
+			execute_command(p, p->i);
 			exit(1); // !
 		}
 		close_safe(p->pipefd[1]);
@@ -91,7 +91,7 @@ void	last_command(t_pipex *p)
 	if (p->pid == 0)
 	{
 		dup2_io(p->prevfd, p->outfile_fd);
-		execute_command(p, p->i + 1);
+		execute_command(p, p->i);
 		exit(1); // !
 	}
 	if (p->prevfd != STDIN_FILENO)
