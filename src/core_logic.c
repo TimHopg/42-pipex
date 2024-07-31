@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 16:00:53 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:03:16 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	last_command(t_pipex *p)
 	while (wait(NULL) > 0); // !
 }
 
-void	execute_forks_and_pipes(t_pipex *p)
+void	execute_pipex(t_pipex *p)
 {
 	fork_loop(p);
 	last_command(p);
