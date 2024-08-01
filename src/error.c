@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:17:46 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:01:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:18:29 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	errno_handling(char *str, t_pipex *pipex, int exit_status)
 void	error_handling(char *var_str, char *err_str, t_pipex *pipex,
 		int exit_status)
 {
-	write(2, "bash: ", 6);
+	write(2, "pipex: ", 7);
 	if (var_str)
 	{
 		write(2, var_str, ft_strlen(var_str));

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:01:11 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:40:48 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	parse_command(t_pipex *pipex)
 	pipex->args = ft_split(pipex->av[pipex->i], ' ');
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
-	try_command(pipex, pipex->av[pipex->i]);
 	while (pipex->paths[++i])
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
@@ -37,6 +36,7 @@ void	parse_command(t_pipex *pipex)
 		try_command(pipex, full_path);
 		free(full_path);
 	}
+	try_command(pipex, pipex->av[pipex->i]);
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }
 

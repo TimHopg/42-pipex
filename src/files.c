@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:01:28 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:47:47 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	open_infile(t_pipex *p)
 		p->infile_fd = open(p->av[1], O_RDONLY);
 		if (p->infile_fd < 0)
 		{
-			perror(NULL);
+			write(2, "pipex: ", 7);
+			perror(p->av[1]);
 			p->infile_fd = open("/dev/null", O_RDONLY);
 			if (p->infile_fd == -1)
 				errno_handling(p->av[1], p, EXIT_FAILURE);

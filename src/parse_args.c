@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:01:25 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:54:40 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	parse_paths(t_pipex *p)
 	path_len = ft_strlen("PATH=");
 	i = ret_arr_index(p->envp, "PATH=");
 	if (i < 0)
+	// ! don't report the whole argument here
 		error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p, EXIT_FAILURE);
 	p->paths = ft_split(p->envp[i] + path_len, ':');
 	add_slash(p->paths);
