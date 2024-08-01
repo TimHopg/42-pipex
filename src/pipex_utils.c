@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:48:32 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 23:31:01 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:01:23 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_char_array(char **arr)
 /*
  * Safely frees all memory and closes potentially open file descriptors
  */
-void free_all(t_pipex *pipex)
+void	free_all(t_pipex *pipex)
 {
 	free_char_array(pipex->args);
 	free_char_array(pipex->paths);

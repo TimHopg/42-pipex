@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 11:47:51 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:01:11 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	fork_loop(t_pipex *p)
 	}
 }
 
-void wait_children(t_pipex *pipex)
+void	wait_children(t_pipex *pipex)
 {
-	int i;
-	int status;
-	int pid;
+	int	i;
+	int	status;
+	int	pid;
 
 	i = -1;
 	while (++i < pipex->cmd_total)

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 00:17:27 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 12:01:25 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	add_slash(char **paths)
 void	parse_paths(t_pipex *p)
 {
 	int	i;
-	int path_len;
+	int	path_len;
 
 	path_len = ft_strlen("PATH=");
 	i = ret_arr_index(p->envp, "PATH=");
