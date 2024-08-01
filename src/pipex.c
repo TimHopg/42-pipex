@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/07/31 23:58:36 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:59:11 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO check on linux if outfile creates non existent file
 // TODO when creating pipes if later pipes fail, close the earlier ones
 // TODO Temp2 for potential errors
-// * sometimes appends to outfile?! maybe the way outfile is created? Done I think
+// * sometimes appends to outfile?! maybe the way outfile is created?
+// 	* Done I think
 // ! free args array after exec call? necessary or not?
 // TODO separate bonus
 // ? is it necessary to free malloc'd memory after an exec call?

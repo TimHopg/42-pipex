@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/07/30 16:59:47 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/01 11:46:15 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ LIBFT		= -L $(LIBFT_DIR) -lft
 
 SRC 		= 	pipex.c \
 				core_logic.c \
+				core_logic2.c \
 				parse_args.c \
 				files.c \
 				error.c \

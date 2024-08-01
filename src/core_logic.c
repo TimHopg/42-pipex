@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 00:17:01 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:47:51 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  ! If no successful path is found?
  ! change from arg_num to p->i and test
  */
-void	execute_command(t_pipex *pipex)
+void	parse_command(t_pipex *pipex)
 {
 	int		i;
 	char	*full_path;
@@ -28,17 +28,13 @@ void	execute_command(t_pipex *pipex)
 	pipex->args = ft_split(pipex->av[pipex->i], ' ');
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
+	try_command(pipex, pipex->av[pipex->i]);
 	while (pipex->paths[++i])
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
 		if (full_path == NULL)
 			error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
-		if (access(full_path, X_OK) == 0)
-		{
-			execve(full_path, pipex->args, pipex->envp);
-			free(full_path);
-			errno_handling(NULL, pipex, EXIT_FAILURE);
-		}
+		try_command(pipex, full_path);
 		free(full_path);
 	}
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
@@ -58,7 +54,7 @@ void	fork_loop(t_pipex *p)
 		{
 			close_safe(p->pipefd[0]); // ! why?
 			dup2_io(p->prevfd, p->pipefd[1]);
-			execute_command(p);
+			parse_command(p);
 			exit(1); // !
 		}
 		close_safe(p->pipefd[1]);
@@ -94,7 +90,7 @@ void	last_command(t_pipex *p)
 	if (p->last_pid == 0)
 	{
 		dup2_io(p->prevfd, p->outfile_fd);
-		execute_command(p);
+		parse_command(p);
 		exit(1); // !
 	}
 	if (p->prevfd != STDIN_FILENO)

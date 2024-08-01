@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 00:16:05 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 11:46:36 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void		close_safe(int fd);
 void		free_all(t_pipex *pipex);
 int			ret_arr_index(char **arr, char *str);
 void		dup2_io(int read_fd, int write_fd);
+void		try_command(t_pipex *pipex, char *file);
 
 #endif
