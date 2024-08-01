@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 11:46:36 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:08:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define ERR_MALLOC "Malloc error\n"
 # define ERR_CMDNOTFOUND "command not found\n"
 # define ERR_NOFILE "No such file or directory\n"
+# define PIP_STR "pipex: "
+# define PIP_STR_LEN 7
 
 typedef struct s_pipex
 {

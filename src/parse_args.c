@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:54:40 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/01 19:25:41 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,32 @@ void	add_slash(char **paths)
 /*
  * Iterates through environment variables until PATH= is found then
  * separates them by colon and adds them to array of strings 'path' in
- * struct.
+ * struct. If environment is NULL or no PATH is set, the default of /usr/bin
+ ! and /bin is used (as is the case on most Linux systems) CHECK THIS
  */
 void	parse_paths(t_pipex *p)
 {
 	int	i;
 	int	path_len;
+	char *default_path;
 
+	default_path = "/usr/bin:/bin";
 	path_len = ft_strlen("PATH=");
 	i = ret_arr_index(p->envp, "PATH=");
+	// ft_printf("%s\n", p->envp[i]);
 	if (i < 0)
-	// ! don't report the whole argument here
-		error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p, EXIT_FAILURE);
-	p->paths = ft_split(p->envp[i] + path_len, ':');
+	{
+		// ft_printf("check\n");
+		p->paths = ft_split(default_path, ':');
+		// ! don't report the whole argument here
+		// error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p, EXIT_FAILURE);
+	}
+	else
+		p->paths = ft_split(p->envp[i] + path_len, ':');
+	if (p->paths == NULL)
+		error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE);
+	// NULL check
 	add_slash(p->paths);
+	// for(int i = 0; p->paths[i]; i++)
+		// ft_printf("2: %s\n", p->paths[i]);
 }
