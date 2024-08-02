@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 18:29:13 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:03:06 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include "../libft/include/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 // Errors
 # define ERR_ARGS "Too few arguments\n"
@@ -51,6 +51,17 @@ typedef struct s_pipex
 	// int 	exit_status;
 }			t_pipex;
 
+typedef struct s_split_words
+{
+	int		count;
+	int		in_word;
+	int		in_quotes;
+	char	quote_char;
+	char	*word_start;
+	int		curr_word;
+	int		len;
+}			t_split_words;
+
 void		prepare_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
 void		open_files(t_pipex *pipex);
@@ -64,5 +75,7 @@ void		free_all(t_pipex *pipex);
 int			ret_arr_index(char **arr, char *str);
 void		dup2_io(int read_fd, int write_fd);
 void		try_command(t_pipex *pipex, char *file);
+void		parse_args(t_pipex *pipex, char *str);
+void		count_words_quotes(t_split_words *s, char *str);
 
 #endif

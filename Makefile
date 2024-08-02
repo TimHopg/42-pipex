@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/08/01 11:46:15 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/02 21:31:45 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ SRC 		= 	pipex.c \
 				core_logic.c \
 				core_logic2.c \
 				parse_args.c \
+				parse_args2.c \
+				parse_args3.c \
 				files.c \
 				error.c \
 				pipex_utils.c
