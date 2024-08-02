@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 19:02:57 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 19:55:45 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_split_words{
     char *word_start;
     int curr_word;
     int len;
-    char **words; // ! temporary, replace with pipex->args (or whatever)
+    // char **words; // ! temporary, replace with pipex->args (or whatever)
 } t_split_words;
 
 /*
@@ -64,21 +64,21 @@ void count_words_quotes(t_split_words *s, char *str)
     }
 }
 
-void malloc_word(t_split_words *s, char **words)
+void malloc_word(t_pipex *p, t_split_words *s)
 {
-    words[s->curr_word] = malloc(s->len + 1);
-    if (!words[s->curr_word])
+    p->args[s->curr_word] = malloc(s->len + 1);
+    if (p->args[s->curr_word] == NULL)
     {
         // Handle allocation failure
-        for (int i = 0; i < s->curr_word; i++) free(words[i]);
-        free(words);
+        for (int i = 0; i < s->curr_word; i++) free(p->args[i]);
+        free(p->args);
         exit(1); // !
     }
-    strncpy(words[s->curr_word], s->word_start, s->len); // ! can't use this
-    words[s->curr_word][s->len] = '\0';
+    strncpy(p->args[s->curr_word], s->word_start, s->len); // ! can't use this
+    p->args[s->curr_word][s->len] = '\0';
 }
 
-void if_is_quote(t_split_words *s, char **words, char *str)
+void if_is_quote(t_pipex *p, t_split_words *s, char *str)
 {
     if (!s->in_quotes)
     {
@@ -90,7 +90,7 @@ void if_is_quote(t_split_words *s, char **words, char *str)
     else if (*str == s->quote_char)
     {
         s->len = str - s->word_start;
-        malloc_word(s, words);
+        malloc_word(p, s);
         s->curr_word++;
         s->in_quotes = false;
         s->in_word = false;
@@ -100,23 +100,31 @@ void if_is_quote(t_split_words *s, char **words, char *str)
 /*
  * Handles last word if not in quotes.
  */
-// void last_word()
+static void last_word(t_pipex *p, t_split_words *s, char *str)
+{
+    if (s->in_word && !s->in_quotes)
+    {
+        s->len = str - s->word_start;
+        malloc_word(p, s);
+        s->curr_word++;
+    }
+}
 
 // ! might need protection if quotes do not match
-char** split_words_quotes(t_split_words *s, char* str, char **words)
+void split_words_quotes(t_pipex *p, t_split_words *s, char* str)
 {
     s->word_start = str;
     s->quote_char = '\0';
     while (*str)
     {
         if (*str == '\'' || *str == '\"')
-            if_is_quote(s, words, str);
+            if_is_quote(p, s, str);
         else if (*str == ' ' && !s->in_quotes)
         {
             if (s->in_word)
             {
                 s->len = str - s->word_start;
-                malloc_word(s, words);
+                malloc_word(p, s);
                 s->curr_word++;
                 s->in_word = false;
             }
@@ -128,24 +136,15 @@ char** split_words_quotes(t_split_words *s, char* str, char **words)
         }
         str++;
     }
-
-    // Last Word
-    if (s->in_word && !s->in_quotes)
-    {
-        s->len = str - s->word_start;
-        malloc_word(s, words);
-        s->curr_word++;
-    }
-    words[s->curr_word] = NULL;  // NULL terminator
-    return words;
+    last_word(p, s, str);
 }
 
 // ! could skip empty strings if they're a problem in the main function
 // ! can trim the string of blank space at start?
-char **parse_args(char *str)
+void parse_args(t_pipex *pipex, char *str)
 {
     t_split_words s;
-    char **words;
+    // char ** words;
 
     ft_bzero(&s, sizeof(s));
     str = ft_strtrim(str, " "); // ! malloc
@@ -153,16 +152,20 @@ char **parse_args(char *str)
     ft_printf("count: %d\n", s.count);
 	if (s.count > 0)
 	{
-		words = malloc(sizeof(char *) * (s.count + 1));
+		pipex->args = malloc(sizeof(char *) * (s.count + 1));
 		// if (words == NULL)
 		// 	error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 	}
 	else
 		exit(1); // ! do what?
+    // words = s.words;
     ft_bzero(&s, sizeof(s));
-	words = split_words_quotes(&s, str, words);
+    // s.words = words;
+	split_words_quotes(pipex, &s, str);
+    pipex->args[s.curr_word] = NULL;  // NULL terminator
     free(str);
-    return words;
+    // return words;
+    // free_char_array(s.words); 
 }
 
 // TODO how to find PATH on different systems
@@ -178,7 +181,7 @@ char **parse_args(char *str)
 // TODO waitpid()
 int	main(int ac, char **av, char **envp)
 {
-	// t_pipex	pipex;
+	t_pipex	pipex;
 
 	// initialise_pipex_struct(ac, av, envp, &pipex);
 	// prepare_args(&pipex);  // validates args
@@ -190,17 +193,16 @@ int	main(int ac, char **av, char **envp)
 
 
 	char	*cmd;
-    char **words;
 	(void)ac;
 	(void)av;
 	(void)envp;
 	// cmd = " awk  '{count++} END {print count}' awk";
-	cmd = " awk  \"{count++} END {print count}\" awk";
+	// cmd = " awk  \"{count++} END {print count}\" awk";
 	// cmd = "  awk  '' ''  'a' w 'k' hello '{count++} END {print count}' awk   '";
 
-    words = parse_args(cmd);
-    for(int x = 0; words[x]; x++)
-        ft_printf(":%s:\n", words[x]);
+    parse_args(&pipex, cmd);
+    for(int x = 0; pipex.args[x]; x++)
+        ft_printf(":%s:\n", pipex.args[x]);
 
 	// i = count_words_quotes(cmd);
 	// ft_printf("%d\n", i);
