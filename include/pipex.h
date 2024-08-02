@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 18:08:39 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:32:32 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct s_pipex
 	int		ac;
 	char	**av;
 	char	**envp;
-	char **args;  // ! malloc
-	char **paths; // ! malloc
+	char	**args;
+	char	**paths;
 	int		is_here_doc;
 	int		cmd_total;
 	int		i;
@@ -53,7 +53,7 @@ typedef struct s_pipex
 	// int 	exit_status;
 }			t_pipex;
 
-void		parse_args(t_pipex *pipex);
+void		prepare_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
 void		open_files(t_pipex *pipex);
 void		execute_pipex(t_pipex *p);

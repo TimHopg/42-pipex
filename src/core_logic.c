@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 12:40:48 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:57:13 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /*
  * Splits args from the arg_numth argument vector. Cycles through available
  * paths appending the cmd name to each path name until a successful match is
- * found then executes using execve().
+ * found then attempts to execute using execve(). Also attempts execution
+ * with the raw argument name in case path (/bin/cat) is given as argument.
  ! If no successful path is found?
- ! change from arg_num to p->i and test
  */
 void	parse_command(t_pipex *pipex)
 {
@@ -28,6 +28,17 @@ void	parse_command(t_pipex *pipex)
 	pipex->args = ft_split(pipex->av[pipex->i], ' ');
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
+
+
+	// for(int i = 0; pipex->args[i]; i++)
+	// 	write(2, pipex->args[i], 5);
+
+	// pipex->args[0] = "cat";
+	// pipex->args[1] = "";
+	// pipex->args[2] = "-b";
+
+
+
 	while (pipex->paths[++i])
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);

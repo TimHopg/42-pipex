@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 19:25:41 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:32:44 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	empty_string_check(t_pipex *pipex)
  * Sets pipex->here_doc field to TRUE if first arg == "here_doc"
  * Adds number of forks required (no. of cmds) to pipex struct.
  */
-void	parse_args(t_pipex *p)
+void	prepare_args(t_pipex *p)
 {
 	if (p->ac < 5)
 		error_handling(NULL, ERR_ARGS, p, EXIT_FAILURE);
@@ -83,20 +83,12 @@ void	parse_paths(t_pipex *p)
 	default_path = "/usr/bin:/bin";
 	path_len = ft_strlen("PATH=");
 	i = ret_arr_index(p->envp, "PATH=");
-	// ft_printf("%s\n", p->envp[i]);
 	if (i < 0)
-	{
-		// ft_printf("check\n");
 		p->paths = ft_split(default_path, ':');
-		// ! don't report the whole argument here
-		// error_handling(p->av[2 + p->is_here_doc], ERR_NOFILE, p, EXIT_FAILURE);
-	}
 	else
 		p->paths = ft_split(p->envp[i] + path_len, ':');
 	if (p->paths == NULL)
 		error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE);
-	// NULL check
+	// ! NULL check
 	add_slash(p->paths);
-	// for(int i = 0; p->paths[i]; i++)
-		// ft_printf("2: %s\n", p->paths[i]);
 }
