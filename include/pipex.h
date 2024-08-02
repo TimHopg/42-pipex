@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 23:03:06 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:54:29 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "../libft/include/libft.h"
+// # include "parse_args.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -48,34 +49,22 @@ typedef struct s_pipex
 	pid_t	pid;
 	pid_t	last_pid;
 	int		last_status;
-	// int 	exit_status;
+	// int 	exit_status; // !
 }			t_pipex;
 
-typedef struct s_split_words
-{
-	int		count;
-	int		in_word;
-	int		in_quotes;
-	char	quote_char;
-	char	*word_start;
-	int		curr_word;
-	int		len;
-}			t_split_words;
-
+void		execute_pipex(t_pipex *p);
+void		try_command(t_pipex *pipex, char *file);
+int			ret_arr_index(char **arr, char *str);
+void		dup2_io(int read_fd, int write_fd);
 void		prepare_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
+void		parse_args(t_pipex *pipex, char *str);
 void		open_files(t_pipex *pipex);
-void		execute_pipex(t_pipex *p);
+void		close_safe(int fd);
+void		free_char_array(char **arr);
+void		free_all(t_pipex *pipex);
 void		errno_handling(char *str, t_pipex *pipex, int exit_status);
 void		error_handling(char *var_str, char *err_str, t_pipex *pipex,
 				int exit_status);
-void		free_char_array(char **arr);
-void		close_safe(int fd);
-void		free_all(t_pipex *pipex);
-int			ret_arr_index(char **arr, char *str);
-void		dup2_io(int read_fd, int write_fd);
-void		try_command(t_pipex *pipex, char *file);
-void		parse_args(t_pipex *pipex, char *str);
-void		count_words_quotes(t_split_words *s, char *str);
 
 #endif
