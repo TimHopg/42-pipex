@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 11:32:32 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:29:13 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
-# define TRUE 1
-# define FALSE 0
+# include <stdbool.h>
 
 // Errors
 # define ERR_ARGS "Too few arguments\n"
