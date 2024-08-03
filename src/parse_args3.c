@@ -6,13 +6,16 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:31:22 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 00:09:45 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:01:35 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_args.h"
 #include "pipex.h"
 
+/*
+ * Counts words and considers anything between quotes as one word (arg)
+ */
 void	count_words_quotes(t_split_words *s, char *str)
 {
 	while (*str)

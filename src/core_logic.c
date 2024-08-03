@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:23:50 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:06:31 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	parse_command(t_pipex *pipex)
 {
 	int		i;
 	char	*full_path;
-	char 	*av_path;
+	char	*av_path;
 
 	i = -1;
 	av_path = pipex->av[pipex->i];
-    parse_args(pipex, av_path);
+	parse_args(pipex, av_path);
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 	if (ft_strchr(av_path, '/'))

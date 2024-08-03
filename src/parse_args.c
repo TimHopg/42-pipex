@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:29:07 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:06:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	add_slash(char **paths)
  */
 void	parse_paths(t_pipex *p)
 {
-	int	i;
-	int	path_len;
-	char *default_path;
+	int		i;
+	int		path_len;
+	char	*default_path;
 
 	default_path = "/usr/bin:/bin";
 	path_len = ft_strlen("PATH=");

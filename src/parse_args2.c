@@ -6,16 +6,13 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:28:35 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:50:53 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:06:51 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_args.h"
 #include "pipex.h"
 
-// ! make small function to increase starting index of char** if first str is
-// ! empty
-// ! test with combination of quotes
 void	malloc_word(t_pipex *p, t_split_words *s)
 {
 	p->args[s->curr_word] = malloc(s->len + 1);
@@ -89,7 +86,6 @@ void	split_words_quotes(t_pipex *p, t_split_words *s, char *str)
 	last_word(p, s, str);
 }
 
-
 void	parse_args(t_pipex *pipex, char *str)
 {
 	t_split_words	s;
@@ -109,7 +105,7 @@ void	parse_args(t_pipex *pipex, char *str)
 		}
 	}
 	else
-		exit(1); // ! do what?
+		error_handling(NULL, ERR_INVALID_ARG, pipex, EXIT_FAILURE);
 	ft_bzero(&s, sizeof(s));
 	s.str = str;
 	split_words_quotes(pipex, &s, str);

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:35:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:06:43 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,3 @@ int	main(int ac, char **av, char **envp)
 	free_all(&pipex);
 	exit(pipex.last_status);
 }
-
