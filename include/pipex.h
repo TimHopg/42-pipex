@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 23:54:29 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:31:15 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "../libft/include/libft.h"
+# include <sys/wait.h>
 // # include "parse_args.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -31,6 +32,7 @@
 # define ERR_NOFILE "No such file or directory\n"
 # define PIP_STR "pipex: "
 # define PIP_STR_LEN 7
+# define ERREXECCMD 126
 
 typedef struct s_pipex
 {

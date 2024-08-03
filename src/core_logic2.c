@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 01:10:34 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 17:09:48 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:30:52 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	try_command(t_pipex *pipex, char *file)
 			errno_handling(NULL, pipex, EXIT_FAILURE);
 		}
 		else
-			errno_handling(NULL, pipex, 126);
+			errno_handling(NULL, pipex, ERREXECCMD);
 			// perror("pipex: ");
 	}
 }
