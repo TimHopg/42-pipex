@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:17:46 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/01 18:09:28 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:05:31 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
  */
 void	errno_handling(char *str, t_pipex *pipex, int exit_status)
 {
+	write(STDERR_FILENO, PIP_STR, PIP_STR_LEN);
 	perror(str);
 	free_all(pipex);
 	exit(exit_status);

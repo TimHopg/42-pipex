@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 20:02:59 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:55:08 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	parse_command(t_pipex *pipex)
 		try_command(pipex, full_path);
 		free(full_path);
 	}
+
 	try_command(pipex, pipex->av[pipex->i]);
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 18:33:21 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:26:55 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	prepare_args(t_pipex *p)
 			error_handling(NULL, ERR_ARGS, p, EXIT_FAILURE);
 		p->is_here_doc = true;
 	}
-	empty_string_check(p);
+	// empty_string_check(p);
 	// ! should this only check files? can it ignore cmds?
 	p->cmd_total = p->ac - p->is_here_doc - 3;
 	p->i = 1 + p->is_here_doc;

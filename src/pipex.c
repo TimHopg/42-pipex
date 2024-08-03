@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/02 23:49:01 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 16:55:33 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	main(int ac, char **av, char **envp)
 	prepare_args(&pipex);  // validates args
 	open_files(&pipex);  // opens file descriptors
 	parse_paths(&pipex); // creates array of paths
+	
+
 	execute_pipex(&pipex);
 	free_all(&pipex);
 	exit(pipex.last_status);
