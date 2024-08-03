@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 01:10:34 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 17:30:52 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:16:13 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
  */
 void	try_command(t_pipex *pipex, char *file)
 {
-	// dprintf(2, "file: %s\n", file);
 	if (access(file, F_OK) == 0)
 	{
 		if (access(file, X_OK) == 0)
@@ -29,6 +28,5 @@ void	try_command(t_pipex *pipex, char *file)
 		}
 		else
 			errno_handling(NULL, pipex, ERREXECCMD);
-			// perror("pipex: ");
 	}
 }

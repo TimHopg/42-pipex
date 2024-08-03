@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 16:55:08 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:10:55 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,24 @@
  * paths appending the cmd name to each path name until a successful match is
  * found then attempts to execute using execve(). Also attempts execution
  * with the raw argument name in case path (/bin/cat) is given as argument.
- ! If no successful path is found?
  */
 void	parse_command(t_pipex *pipex)
 {
 	int		i;
 	char	*full_path;
+	char 	*av_path;
 
 	i = -1;
-	// pipex->args = ft_split(pipex->av[pipex->i], ' ');
-    parse_args(pipex, pipex->av[pipex->i]);
+	av_path = pipex->av[pipex->i];
+    parse_args(pipex, av_path);
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
-
-
-	// for(int i = 0; pipex->args[i]; i++)
-	// 	write(2, pipex->args[i], 5);
-
-	// pipex->args[0] = "cat";
-	// pipex->args[1] = "";
-	// pipex->args[2] = "-b";
-
-
-
-	while (pipex->paths[++i])
+	if (ft_strchr(av_path, '/'))
+	{
+		full_path = ft_strdup(av_path);
+		try_command(pipex, full_path);
+	}
+	while (pipex->paths[++i] && av_path[0] != '.')
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
 		if (full_path == NULL)
@@ -48,8 +42,6 @@ void	parse_command(t_pipex *pipex)
 		try_command(pipex, full_path);
 		free(full_path);
 	}
-
-	try_command(pipex, pipex->av[pipex->i]);
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }
 
@@ -65,10 +57,9 @@ void	fork_loop(t_pipex *p)
 		p->pid = fork();
 		if (p->pid == 0)
 		{
-			close_safe(p->pipefd[0]); // ! why?
+			close_safe(p->pipefd[0]);
 			dup2_io(p->prevfd, p->pipefd[1]);
 			parse_command(p);
-			exit(1); // !
 		}
 		close_safe(p->pipefd[1]);
 		if (p->prevfd != STDIN_FILENO)
@@ -104,7 +95,6 @@ void	last_command(t_pipex *p)
 	{
 		dup2_io(p->prevfd, p->outfile_fd);
 		parse_command(p);
-		exit(1); // !
 	}
 	if (p->prevfd != STDIN_FILENO)
 		close_safe(p->prevfd);

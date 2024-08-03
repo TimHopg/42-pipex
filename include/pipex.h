@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 17:31:15 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:20:44 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 # define PIPEX_H
 
 # include "../libft/include/libft.h"
-# include <sys/wait.h>
-// # include "parse_args.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 // Errors
@@ -51,7 +50,6 @@ typedef struct s_pipex
 	pid_t	pid;
 	pid_t	last_pid;
 	int		last_status;
-	// int 	exit_status; // !
 }			t_pipex;
 
 void		execute_pipex(t_pipex *p);
