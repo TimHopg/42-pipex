@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:28:35 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:11:11 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:50:53 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ void	malloc_word(t_pipex *p, t_split_words *s)
 {
 	p->args[s->curr_word] = malloc(s->len + 1);
 	if (p->args[s->curr_word] == NULL)
-	// ! works because largest index must be NULL?
 	{
 		free(s->str);
-		error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE); // ! test
+		error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE);
 	}
 	ft_strlcpy(p->args[s->curr_word], s->word_start, s->len + 1);
 	p->args[s->curr_word][s->len] = '\0';
@@ -90,8 +89,7 @@ void	split_words_quotes(t_pipex *p, t_split_words *s, char *str)
 	last_word(p, s, str);
 }
 
-// ! could skip empty strings if they're a problem in the main function
-// ! can trim the string of blank space at start?
+
 void	parse_args(t_pipex *pipex, char *str)
 {
 	t_split_words	s;
@@ -107,7 +105,7 @@ void	parse_args(t_pipex *pipex, char *str)
 		if (pipex->args == NULL)
 		{
 			free(str);
-			error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE); // ! TEST
+			error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 		}
 	}
 	else

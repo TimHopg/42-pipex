@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:19:59 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:35:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO separate bonus
 // TODO check every failure for leaks or fd leaks
 // TODO trues and falses
+// ! mismatching quotes?
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;

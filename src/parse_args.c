@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:18:18 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:29:07 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	add_slash(char **paths)
 /*
  * Iterates through environment variables until PATH= is found then
  * separates them by colon and adds them to array of strings 'path' in
- * struct. If environment is NULL or no PATH is set, the default of /usr/bin
+ ! struct. If environment is NULL or no PATH is set, the default of /usr/bin
  ! and /bin is used (as is the case on most Linux systems) CHECK THIS
  */
 void	parse_paths(t_pipex *p)
@@ -88,6 +88,5 @@ void	parse_paths(t_pipex *p)
 		p->paths = ft_split(p->envp[i] + path_len, ':');
 	if (p->paths == NULL)
 		error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE);
-	// ! NULL check
 	add_slash(p->paths);
 }
