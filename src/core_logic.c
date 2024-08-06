@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 21:06:31 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:09:06 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	fork_loop(t_pipex *p)
 		p->prevfd = p->pipefd[0];
 	}
 }
+
 /*
  * Waits for number of children that have been created
  */

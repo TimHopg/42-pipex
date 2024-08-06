@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/08/02 21:31:45 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/06 15:27:53 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ LIBFT		= -L $(LIBFT_DIR) -lft
 SRC 		= 	pipex.c \
 				core_logic.c \
 				core_logic2.c \
+				here_doc.c \
 				parse_args.c \
 				parse_args2.c \
 				parse_args3.c \
@@ -36,6 +37,8 @@ SRC 		= 	pipex.c \
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 all: $(NAME)
+
+bonus: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c 
 	@mkdir -p $(OBJ_DIR)

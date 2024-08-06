@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 20:29:01 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:09:31 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	open_outfile(t_pipex *p)
 	if (p->outfile_fd < 0)
 		errno_handling(NULL, p, EXIT_FAILURE);
 }
+
 /*
  ! here_doc
  * Opens infile in readonly mode
