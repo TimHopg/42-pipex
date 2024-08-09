@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 21:06:43 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:07:54 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ int	main(int ac, char **av, char **envp)
 	prepare_args(&pipex);
 	open_files(&pipex);
 	parse_paths(&pipex);
+
+	// ft_printf("delim: %s\n", pipex.delim);
+
 	execute_pipex(&pipex);
 	free_all(&pipex);
 	exit(pipex.last_status);

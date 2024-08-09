@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wleite <wleite@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 15:40:32 by wleite            #+#    #+#             */
-/*   Updated: 2021/10/05 23:59:25 by wleite           ###   ########.fr       */
+/*   Updated: 2024/08/08 22:25:19 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

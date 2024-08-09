@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 18:20:44 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:16:41 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_pipex
 	char	**args;
 	char	**paths;
 	int		is_here_doc;
+	char	*delim;
+	size_t	delim_len;
 	int		cmd_total;
 	int		i;
 	int		infile_fd;
@@ -53,6 +55,7 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		execute_pipex(t_pipex *p);
+void		handle_here_doc(t_pipex *p);
 void		try_command(t_pipex *pipex, char *file);
 int			ret_arr_index(char **arr, char *str);
 void		dup2_io(int read_fd, int write_fd);

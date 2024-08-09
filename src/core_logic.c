@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/03 21:09:06 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:58:33 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	parse_command(t_pipex *pipex)
  */
 void	fork_loop(t_pipex *p)
 {
-	p->prevfd = p->infile_fd;
+	if (p->is_here_doc)
+		handle_here_doc(p);
+	else
+		p->prevfd = p->infile_fd;
 	while (++p->i <= p->cmd_total)
 	{
 		pipe(p->pipefd);
