@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 22:31:33 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 22:58:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	last_command(t_pipex *p)
 	p->last_pid = fork();
 	if (p->last_pid == 0)
 	{
-		dprintf(2, "last command\n");
 		dup2_io(p->prevfd, p->outfile_fd);
 		parse_command(p);
 	}

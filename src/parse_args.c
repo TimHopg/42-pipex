@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/07 15:16:44 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 22:50:48 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	empty_string_check(t_pipex *pipex)
 	i = -1;
 	while (++i < pipex->ac)
 	{
-		if (!pipex->av[i][0])
+		if (!pipex->av[i][0] && (!pipex->is_here_doc && i != 2))
 			error_handling(NULL, ERR_INVALID_ARG, pipex, EXIT_FAILURE);
 	}
 }
