@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 18:43:37 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 22:35:52 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,45 @@
 void	here_doc(t_pipex *p)
 {
 	char	*line;
+	int		read;
 
 	line = NULL;
-	ft_putstr_fd("> ", 1);
-	while (get_next_line(STDIN_FILENO, &line))
+	while (1)
 	{
-		// if (line == 0) // ! error from GNL
-		if (!ft_strncmp(line, p->delim, p->delim_len)
-			&& line[p->delim_len] == '\n')
+		ft_putstr_fd("> ", 1);
+		read = get_next_line(STDIN_FILENO, &line);
+		// if (read == -1) // ! error from GNL
+		if (read == 0 || (!ft_strncmp(line, p->delim, p->delim_len)
+			&& (line[p->delim_len] == '\n' || line[p->delim_len] == '\0')))
 		{
 			free(line);
-			close_safe(p->pipefd[1]);
+			// close_safe(p->pipefd[1]);
 			break ;
 		}
 		ft_putstr_fd(line, p->pipefd[1]);
 		free(line);
-		ft_putstr_fd("> ", 1);
 	}
-	// close_safe(p->pipefd[0]);
+	close_safe(p->pipefd[1]);
 }
 
 void	handle_here_doc(t_pipex *p)
 {
 	pid_t pid;
 
-	pipe(p->pipefd);
+	if (pipe(p->pipefd) == -1)
+	{
+		exit(0); // !
+	}
 	pid = fork();
+	if (pid == -1)
+	{
+		exit(0); // !
+	}
 	if (pid == 0)
 	{
 		close_safe(p->pipefd[0]);
 		here_doc(p);
-		exit(0);
+		exit(EXIT_SUCCESS); // !
 	}
 	close_safe(p->pipefd[1]);
 	waitpid(pid, NULL, 0);

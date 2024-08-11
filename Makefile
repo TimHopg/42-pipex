@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/08/11 18:33:32 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/11 21:59:09 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,5 +76,8 @@ NC		=	'\033[0m' # no colour
 test1: # should return input plus two line numbers
 	valgrind --leak-check=full --track-fds=all --track-origins=yes --show-reachable=yes -s ./pipex infile "cat -b" "cat -b" outfile
 
-testhd: # should return input plus two line numbers
+testhdv: # should return input plus two line numbers
 	valgrind --leak-check=full --track-fds=all --track-origins=yes --show-reachable=yes -s ./pipex here_doc EOF "cat -b" "cat -b" "cat -b" outfile
+
+testhd: # should return input plus two line numbers
+	./pipex here_doc EOF "cat -e" "cat -b" "cat -b" outfile

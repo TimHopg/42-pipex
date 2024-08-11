@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 18:44:32 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 22:31:33 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ void	parse_command(t_pipex *pipex)
  */
 void	fork_loop(t_pipex *p)
 {
+	// dprintf(2, "cmd tot: %d\n", p->cmd_total);
 	if (p->is_here_doc)
 		handle_here_doc(p);
 	else
 		p->prevfd = p->infile_fd;
-	while (++p->i <= p->cmd_total)
+	// dprintf(2, "i: %d\n", p->i);
+	while (++p->i - p->is_here_doc <= p->cmd_total)
 	{
 		pipe(p->pipefd);
 		p->pid = fork();
@@ -100,6 +102,7 @@ void	last_command(t_pipex *p)
 	p->last_pid = fork();
 	if (p->last_pid == 0)
 	{
+		dprintf(2, "last command\n");
 		dup2_io(p->prevfd, p->outfile_fd);
 		parse_command(p);
 	}
