@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/07 15:58:33 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:35:53 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	parse_command(t_pipex *pipex)
 
 	i = -1;
 	av_path = pipex->av[pipex->i];
+	// dprintf(2, "command %s\n", pipex->av[pipex->i]);
 	parse_args(pipex, av_path);
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
@@ -81,7 +82,7 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i < pipex->cmd_total)
+	while (++i < pipex->cmd_total + pipex->is_here_doc) // + here_doc?
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)

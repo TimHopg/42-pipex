@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 19:24:25 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/07 16:01:17 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:34:06 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 int					ft_isspace(char c);
 void				ft_putbase_fd(int n, const char *base, int fd);
 long				ft_abs(long n);
-int					get_next_line(int fd, char *line);
+int					get_next_line(int fd, char **line);
 char				*ft_strpbrk(const char *s1, const char *s2);
 int					count_words(char *str, char *set);
 // size_t			ft_numlen(long n);

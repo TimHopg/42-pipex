@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/08 22:07:54 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/11 18:16:49 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO check every failure for leaks or fd leaks
 // TODO trues and falses
 // ! mismatching quotes?
+// TODO check here_doc first input is DELIM
+// TODO test with huge here_doc input (whats the benefit of using temp file
+// 	TODO over just sending the string?)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
@@ -41,8 +44,19 @@ int	main(int ac, char **av, char **envp)
 	parse_paths(&pipex);
 
 	// ft_printf("delim: %s\n", pipex.delim);
+	// ft_printf("command total: %d\n", pipex.cmd_total);
 
 	execute_pipex(&pipex);
 	free_all(&pipex);
 	exit(pipex.last_status);
+
+	// (void)ac;
+	// (void)av;
+	// (void)envp;
+
+	// char *line;
+	// int fd = open("infile", O_RDWR);
+	// get_next_line(fd, &line);
+
+	// ft_printf("%s\n", line);
 }
