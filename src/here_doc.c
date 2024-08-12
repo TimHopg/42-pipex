@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 22:46:59 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:36:23 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	here_doc(t_pipex *p)
 	int		read;
 
 	line = NULL;
+	close_safe(p->outfile_fd);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
@@ -27,7 +28,10 @@ void	here_doc(t_pipex *p)
 			&& (line[p->delim_len] == '\n' || line[p->delim_len] == '\0')))
 		{
 			free(line);
-			// close_safe(p->pipefd[1]);
+			// close_safe(0);
+			// close_safe(1);
+			// close_safe(p->pipefd[0]);
+			close_safe(p->pipefd[1]);
 			break ;
 		}
 		ft_putstr_fd(line, p->pipefd[1]);
@@ -42,12 +46,12 @@ void	handle_here_doc(t_pipex *p)
 
 	if (pipe(p->pipefd) == -1)
 	{
-		exit(0); // !
+		errno_handling(NULL, p, EXIT_FAILURE); // !
 	}
 	pid = fork();
 	if (pid == -1)
 	{
-		exit(0); // !
+		errno_handling(NULL, p, EXIT_FAILURE); // !
 	}
 	if (pid == 0)
 	{
@@ -58,4 +62,5 @@ void	handle_here_doc(t_pipex *p)
 	close_safe(p->pipefd[1]);
 	waitpid(pid, NULL, 0);
 	p->prevfd = p->pipefd[0];
+	// close_safe(p->pipefd[0]);
 }

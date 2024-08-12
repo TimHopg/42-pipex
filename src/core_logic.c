@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 22:58:39 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:16:06 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	parse_command(t_pipex *pipex)
 
 	i = -1;
 	av_path = pipex->av[pipex->i];
-	// dprintf(2, "command %s\n", pipex->av[pipex->i]);
+	dprintf(2, "command %s\n", pipex->av[pipex->i]);
 	parse_args(pipex, av_path);
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
@@ -75,6 +75,25 @@ void	fork_loop(t_pipex *p)
 }
 
 /*
+ * Handles last iteration of pipex to redirect output to outfile.
+ */
+void	last_command(t_pipex *p)
+{
+	p->last_pid = fork();
+	if (p->last_pid == 0)
+	{
+		dup2_io(p->prevfd, p->outfile_fd);
+		parse_command(p);
+	}
+	if (p->prevfd != STDIN_FILENO)
+	{
+		// dprintf(2, "check\n");
+		close_safe(p->prevfd);
+		// close_safe(p->outfile_fd);
+	}
+}
+
+/*
  * Waits for number of children that have been created
  */
 void	wait_children(t_pipex *pipex)
@@ -92,21 +111,6 @@ void	wait_children(t_pipex *pipex)
 		if (pid == -1)
 			errno_handling(NULL, pipex, status);
 	}
-}
-
-/*
- * Handles last iteration of pipex to redirect output to outfile.
- */
-void	last_command(t_pipex *p)
-{
-	p->last_pid = fork();
-	if (p->last_pid == 0)
-	{
-		dup2_io(p->prevfd, p->outfile_fd);
-		parse_command(p);
-	}
-	if (p->prevfd != STDIN_FILENO)
-		close_safe(p->prevfd);
 }
 
 void	execute_pipex(t_pipex *p)
