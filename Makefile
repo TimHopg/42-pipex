@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/08/12 13:23:20 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/12 16:04:33 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC 			= cc
 RM 			= rm -rf
 INCLUDE 	= -Iinclude
 
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE) -g -O0 # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE) -g -O0 -fsanitize=address
 
 SRC_DIR 	= src/
 OBJ_DIR 	= obj/
