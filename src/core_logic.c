@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/12 14:40:08 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:52:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,6 @@ void	parse_command(t_pipex *pipex)
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }
 
-/*
- * Main loop to redirect infile to STDIN and then to each subsequent command
- */
-void	fork_loop(t_pipex *p)
-{
-	// dprintf(2, "cmd tot: %d\n", p->cmd_total);
-	if (p->is_here_doc)
-		handle_here_doc(p);
-	else
-		p->prevfd = p->infile_fd;
-	// dprintf(2, "i: %d\n", p->i);
-	while (++p->i - p->is_here_doc <= p->cmd_total)
-	{
-		pipe(p->pipefd);
-		p->pid = fork();
-		if (p->pid == 0)
-		{
-			close_safe(p->pipefd[0]);
-			dup2_io(p->prevfd, p->pipefd[1]);
-			parse_command(p);
-		}
-		close_safe(p->pipefd[1]);
-		if (p->prevfd != STDIN_FILENO)
-			close_safe(p->prevfd);
-		p->prevfd = p->pipefd[0];
-	}
-}
 
 /*
  * Handles last iteration of pipex to redirect output to outfile.
@@ -103,13 +76,41 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i < pipex->cmd_total /* + pipex->is_here_doc */) // + here_doc?
+	while (++i - pipex->is_here_doc < pipex->cmd_total /* + pipex->is_here_doc */) // + here_doc?
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)
 			pipex->last_status = WEXITSTATUS(status);
 		if (pid == -1)
 			errno_handling(NULL, pipex, status);
+	}
+}
+
+/*
+ * Main loop to redirect infile to STDIN and then to each subsequent command
+ */
+void	fork_loop(t_pipex *p)
+{
+	// dprintf(2, "cmd tot: %d\n", p->cmd_total);
+	if (p->is_here_doc)
+		handle_here_doc(p);
+	else
+		p->prevfd = p->infile_fd;
+	// dprintf(2, "i: %d\n", p->i);
+	while (++p->i - p->is_here_doc <= p->cmd_total)
+	{
+		pipe(p->pipefd);
+		p->pid = fork();
+		if (p->pid == 0)
+		{
+			close_safe(p->pipefd[0]);
+			dup2_io(p->prevfd, p->pipefd[1]);
+			parse_command(p);
+		}
+		close_safe(p->pipefd[1]);
+		if (p->prevfd != STDIN_FILENO)
+			close_safe(p->prevfd);
+		p->prevfd = p->pipefd[0];
 	}
 }
 
