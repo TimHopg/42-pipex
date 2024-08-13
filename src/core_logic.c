@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/12 18:52:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:56:14 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,11 @@ void	parse_command(t_pipex *pipex)
 
 	i = -1;
 	av_path = pipex->av[pipex->i];
-	// dprintf(2, "command %s\n", pipex->av[pipex->i]);
 	parse_args(pipex, av_path);
 	if (pipex->args == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
-	if (ft_strchr(av_path, '/'))
-	{
-		full_path = ft_strdup(av_path);
-		try_command(pipex, full_path);
-	}
+	if (ft_strchr(av_path, '/') && !ft_strchr(av_path, ' '))
+		try_command(pipex, ft_strdup(av_path));
 	while (pipex->paths[++i] && av_path[0] != '.')
 	{
 		full_path = ft_strjoin(pipex->paths[i], pipex->args[0]);
@@ -76,7 +72,7 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i - pipex->is_here_doc < pipex->cmd_total /* + pipex->is_here_doc */) // + here_doc?
+	while (++i + pipex->is_here_doc < pipex->cmd_total /* + pipex->is_here_doc */) // + here_doc?
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)

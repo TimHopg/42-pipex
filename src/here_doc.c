@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 12:25:54 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:35:12 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	handle_here_doc(t_pipex *p)
 		exit(EXIT_SUCCESS); // !
 	}
 	close_safe(p->pipefd[1]);
-	waitpid(pid, NULL, 0); // ! this is causing too many waits. Why?
+	// waitpid(pid, NULL, 0); // ! should this wait or should this wait at the end
+	// ! parallelism?
 	p->prevfd = p->pipefd[0];
 	// close_safe(p->pipefd[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 12:24:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:36:23 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 	// ft_printf("delim: %s\n", pipex.delim);
 	// ft_printf("command total: %d\n", pipex.cmd_total);
 
-	dprintf(2, "%d\n", pipex.cmd_total);
+	// dprintf(2, "%d\n", pipex.cmd_total);
 
 	execute_pipex(&pipex);
 	free_all(&pipex);
