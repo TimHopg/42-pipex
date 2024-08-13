@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 16:56:14 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:31:13 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	parse_command(t_pipex *pipex)
 	error_handling(pipex->args[0], ERR_CMDNOTFOUND, pipex, 127);
 }
 
-
 /*
  * Handles last iteration of pipex to redirect output to outfile.
  */
@@ -55,11 +54,7 @@ void	last_command(t_pipex *p)
 		parse_command(p);
 	}
 	if (p->prevfd != STDIN_FILENO)
-	{
-		// dprintf(2, "check\n");
 		close_safe(p->prevfd);
-		// close_safe(p->outfile_fd);
-	}
 }
 
 /*
@@ -72,7 +67,7 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i + pipex->is_here_doc < pipex->cmd_total /* + pipex->is_here_doc */) // + here_doc?
+	while (++i + pipex->is_here_doc < pipex->cmd_total) // !
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)
@@ -87,12 +82,10 @@ void	wait_children(t_pipex *pipex)
  */
 void	fork_loop(t_pipex *p)
 {
-	// dprintf(2, "cmd tot: %d\n", p->cmd_total);
 	if (p->is_here_doc)
 		handle_here_doc(p);
 	else
 		p->prevfd = p->infile_fd;
-	// dprintf(2, "i: %d\n", p->i);
 	while (++p->i - p->is_here_doc <= p->cmd_total)
 	{
 		pipe(p->pipefd);

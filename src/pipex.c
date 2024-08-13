@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 15:36:23 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:30:53 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,7 @@ int	main(int ac, char **av, char **envp)
 	prepare_args(&pipex);
 	open_files(&pipex);
 	parse_paths(&pipex);
-
-	// ft_printf("delim: %s\n", pipex.delim);
-	// ft_printf("command total: %d\n", pipex.cmd_total);
-
-	// dprintf(2, "%d\n", pipex.cmd_total);
-
 	execute_pipex(&pipex);
 	free_all(&pipex);
 	exit(pipex.last_status);
-
-	// (void)ac;
-	// (void)av;
-	// (void)envp;
-
-	// char *line;
-	// int fd = open("infile", O_RDWR);
-	// get_next_line(fd, &line);
-
-	// ft_printf("%s\n", line);
 }

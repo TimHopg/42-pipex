@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 15:35:12 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:32:07 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,41 @@ void	here_doc(t_pipex *p)
 	{
 		ft_putstr_fd("> ", 1);
 		read = get_next_line(STDIN_FILENO, &line);
-		// if (read == -1) // ! error from GNL
+		if (read == -1)
+			error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE); // !
 		if (read == 0 || (!ft_strncmp(line, p->delim, p->delim_len)
-			&& (line[p->delim_len] == '\n' || line[p->delim_len] == '\0')))
+				&& (line[p->delim_len] == '\n' || line[p->delim_len] == '\0')))
 		{
 			free(line);
-			// close_safe(0);
-			// close_safe(1);
-			// close_safe(p->pipefd[0]);
 			close_safe(p->pipefd[1]);
 			break ;
 		}
 		ft_putstr_fd(line, p->pipefd[1]);
 		free(line);
 	}
-	free_all(p); // ! is this sufficient
+	free_all(p);
 	close_safe(p->pipefd[1]);
 }
 
 void	handle_here_doc(t_pipex *p)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	if (pipe(p->pipefd) == -1)
-	{
-		errno_handling(NULL, p, EXIT_FAILURE); // !
-	}
+		return (perror(NULL), EXIT_FAILURE);
 	pid = fork();
 	if (pid == -1)
 	{
-		errno_handling(NULL, p, EXIT_FAILURE); // !
+		close_safe(p->pipefd[0]);
+		close_safe(p->pipefd[1]);
+		return (perror(NULL), EXIT_FAILURE); // !
 	}
 	if (pid == 0)
 	{
 		close_safe(p->pipefd[0]);
 		here_doc(p);
-		exit(EXIT_SUCCESS); // !
+		exit(EXIT_SUCCESS);
 	}
 	close_safe(p->pipefd[1]);
-	// waitpid(pid, NULL, 0); // ! should this wait or should this wait at the end
-	// ! parallelism?
 	p->prevfd = p->pipefd[0];
-	// close_safe(p->pipefd[0]);
 }

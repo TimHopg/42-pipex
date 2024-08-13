@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/11 22:33:06 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:32:02 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 /*
  * Opens outfile with read/write permissions, creates if it doesn't exist and
  * truncates it (doesn't append)
- ! herefile
  */
 void	open_outfile(t_pipex *p)
 {
-	// O_APPEND here_doc
 	// ! check on linux if this can create a file
 	if (p->is_here_doc)
-		p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_APPEND, 0644);
+		p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_APPEND,
+				0644);
 	else
-		p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_TRUNC,
+				0644);
 	if (p->outfile_fd < 0)
 		errno_handling(NULL, p, EXIT_FAILURE);
 }
 
 /*
- ! here_doc
  * Opens infile in readonly mode
  */
 void	open_infile(t_pipex *p)
