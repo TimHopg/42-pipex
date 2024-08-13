@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/12 18:53:56 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:25:54 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	handle_here_doc(t_pipex *p)
 		exit(EXIT_SUCCESS); // !
 	}
 	close_safe(p->pipefd[1]);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, NULL, 0); // ! this is causing too many waits. Why?
 	p->prevfd = p->pipefd[0];
 	// close_safe(p->pipefd[0]);
 }
