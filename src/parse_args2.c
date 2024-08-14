@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:28:35 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 17:32:20 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:53:20 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ void	parse_args(t_pipex *pipex, char *str)
 		}
 	}
 	else
+	{
+		free(str); // !
 		error_handling(NULL, ERR_INVALID_ARG, pipex, EXIT_FAILURE);
+	}
 	ft_bzero(&s, sizeof(s));
 	s.str = str;
 	split_words_quotes(pipex, &s, str);
