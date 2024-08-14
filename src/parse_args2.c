@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:28:35 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 14:53:20 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:59:23 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,12 @@ void	parse_args(t_pipex *pipex, char *str)
 	{
 		pipex->args = malloc(sizeof(char *) * (s.count + 1));
 		if (pipex->args == NULL)
-		{
-			free(str);
-			error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
-		}
+			return (free(str), error_handling(NULL, ERR_MALLOC, pipex,
+					EXIT_FAILURE));
 	}
 	else
-	{
-		free(str); // !
-		error_handling(NULL, ERR_INVALID_ARG, pipex, EXIT_FAILURE);
-	}
+		return (free(str), error_handling(NULL, ERR_INVALID_ARG, pipex,
+				EXIT_FAILURE));
 	ft_bzero(&s, sizeof(s));
 	s.str = str;
 	split_words_quotes(pipex, &s, str);
