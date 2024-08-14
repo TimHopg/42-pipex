@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 15:42:31 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:01:30 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,29 @@ void	here_doc(t_pipex *p)
 	close_safe(p->pipefd[1]);
 }
 
+static void	wait_child(t_pipex *pipex, pid_t pid)
+{
+	int	status;
+	int	wpid;
+
+	wpid = waitpid(pid, &status, 0);
+	if (wpid == -1)
+			errno_handling(NULL, pipex, status);
+}
+
+
 int	handle_here_doc(t_pipex *p)
 {
-	pid_t	pid;
-
 	if (pipe(p->pipefd) == -1)
 		return (perror(NULL), EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
+	p->pid = fork();
+	if (p->pid == -1)
 	{
 		close_safe(p->pipefd[0]);
 		close_safe(p->pipefd[1]);
 		return (perror(NULL), EXIT_FAILURE); // !
 	}
-	if (pid == 0)
+	else if (p->pid == 0)
 	{
 		close_safe(p->pipefd[0]);
 		here_doc(p);
@@ -60,5 +69,6 @@ int	handle_here_doc(t_pipex *p)
 	}
 	close_safe(p->pipefd[1]);
 	p->prevfd = p->pipefd[0];
+	wait_child(p, p->pid);
 	return (EXIT_SUCCESS);
 }
