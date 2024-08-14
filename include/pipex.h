@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 12:19:04 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:29:02 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define PIP_STR_LEN 7
 # define ERREXECCMD 126
 
+# define FD_CLOSED -1
+
 typedef struct s_pipex
 {
 	int		ac;
@@ -55,7 +57,7 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		execute_pipex(t_pipex *p);
-int		handle_here_doc(t_pipex *p);
+int			handle_here_doc(t_pipex *p);
 void		try_command(t_pipex *pipex, char *file);
 int			ret_arr_index(char **arr, char *str);
 void		dup2_io(int read_fd, int write_fd, t_pipex *p);

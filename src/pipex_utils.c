@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 15:48:32 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 12:19:39 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:29:39 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ret_arr_index(char **arr, char *str)
  */
 void	close_safe(int fd)
 {
-	if (fd != -1)
+	if (fd != FD_CLOSED)
 		close(fd);
-	fd = -1;
+	fd = FD_CLOSED;
 }
 
 /*
