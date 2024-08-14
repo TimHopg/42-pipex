@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 17:02:41 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:05:32 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	here_doc(t_pipex *p)
 		ft_putstr_fd("> ", 1);
 		read = get_next_line(STDIN_FILENO, &line);
 		if (read == -1)
-			error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE); // !
+			error_handling(NULL, ERR_MALLOC, p, EXIT_FAILURE);
 		if (read == 0 || (!ft_strncmp(line, p->delim, p->delim_len)
 				&& (line[p->delim_len] == '\n' || line[p->delim_len] == '\0')))
 		{

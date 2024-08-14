@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 17:02:51 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:04:50 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i < pipex->cmd_total) // !
+	while (++i < pipex->cmd_total)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)
