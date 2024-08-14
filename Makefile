@@ -6,7 +6,7 @@
 #    By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/10 11:25:34 by thopgood          #+#    #+#              #
-#    Updated: 2024/08/14 14:18:04 by thopgood         ###   ########.fr        #
+#    Updated: 2024/08/14 16:33:12 by thopgood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,7 @@ NC		=	'\033[0m' # no colour
 val		= 	valgrind --leak-check=full --track-fds=all --track-origins=yes --show-reachable=yes -s
 
 norm:
-	norminette ./src ./include ./libft/src ./libft/include
+	norminette ./libft/src ./libft/include ./src ./include
 
 test1v: # should return input plus two line numbers
 	$(val) ./pipex infile "cat -b" "cat -b" outfile

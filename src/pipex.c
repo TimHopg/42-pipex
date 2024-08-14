@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 14:33:25 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:26:19 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 
 // TODO separate bonus
 // TODO check every failure for leaks or fd leaks
-// TODO check for open files with lsof
-// TODO check fd.log with student (./pipex infile "cat -b" "./script" outfile)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;

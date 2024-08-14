@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 16:14:37 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:33:53 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	wait_children(t_pipex *pipex)
 	int	pid;
 
 	i = -1;
-	while (++i /* + pipex->is_here_doc */ < pipex->cmd_total) // !
+	while (++i < pipex->cmd_total) // !
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)
@@ -93,7 +93,7 @@ void	fork_loop(t_pipex *p)
 		if (p->pid == 0)
 		{
 			close_safe(p->pipefd[0]);
-			dup2_io(p->prevfd, p->pipefd[1] ,p);
+			dup2_io(p->prevfd, p->pipefd[1], p);
 			parse_command(p);
 		}
 		close_safe(p->pipefd[1]);

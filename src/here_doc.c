@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 16:01:30 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:32:47 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ static void	wait_child(t_pipex *pipex, pid_t pid)
 
 	wpid = waitpid(pid, &status, 0);
 	if (wpid == -1)
-			errno_handling(NULL, pipex, status);
+		errno_handling(NULL, pipex, status);
 }
-
 
 int	handle_here_doc(t_pipex *p)
 {
