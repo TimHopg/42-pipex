@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 13:09:47 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:11:36 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	wait_children(t_pipex *pipex)
 	i = -1;
 	while (++i + pipex->is_here_doc < pipex->cmd_total) // !
 	{
-		pid = waitpid(-1, &status, WNOHANG);
+		pid = waitpid(-1, &status, 0);
 		if (pid == pipex->last_pid)
 			pipex->last_status = WEXITSTATUS(status);
 		if (pid == -1)
