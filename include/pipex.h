@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 11:16:22 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:19:04 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		execute_pipex(t_pipex *p);
 int		handle_here_doc(t_pipex *p);
 void		try_command(t_pipex *pipex, char *file);
 int			ret_arr_index(char **arr, char *str);
-void		dup2_io(int read_fd, int write_fd);
+void		dup2_io(int read_fd, int write_fd, t_pipex *p);
 void		prepare_args(t_pipex *pipex);
 void		parse_paths(t_pipex *pipex);
 void		parse_args(t_pipex *pipex, char *str);

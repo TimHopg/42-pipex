@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:55:41 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 11:44:29 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:12:16 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	initialise_pipex_struct(int ac, char **av, char **envp, t_pipex *pipex)
 // TODO separate bonus
 // TODO check every failure for leaks or fd leaks
 // TODO trues and falses
-// TODO test with huge here_doc input (whats the benefit of using temp file
-// 	TODO over just sending the string?)
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
