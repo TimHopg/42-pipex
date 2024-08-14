@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 14:49:00 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 13:11:36 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:42:19 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	fork_loop(t_pipex *p)
 		p->last_status = handle_here_doc(p);
 	else
 		p->prevfd = p->infile_fd;
+	// if (pid != 0) // ! XXXXXXXXXXXXXXXXXXXX
 	while (++p->i - p->is_here_doc <= p->cmd_total)
 	{
 		pipe(p->pipefd);

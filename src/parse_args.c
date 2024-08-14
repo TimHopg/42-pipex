@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:24:54 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 15:06:02 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:13:29 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	prepare_args(t_pipex *p)
 		p->delim = p->av[2];
 		p->delim_len = ft_strlen(p->delim);
 	}
-	// empty_string_check(p);
 	p->cmd_total = p->ac - p->is_here_doc - 3;
 	p->i = 1 + p->is_here_doc;
 }
