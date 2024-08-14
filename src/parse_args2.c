@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 21:28:35 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 14:59:23 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:09:44 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	parse_args(t_pipex *pipex, char *str)
 	t_split_words	s;
 
 	ft_bzero(&s, sizeof(s));
-	str = ft_strtrim(str, " "); // ! malloc
+	str = ft_strtrim(str, " ");
 	if (str == NULL)
 		error_handling(NULL, ERR_MALLOC, pipex, EXIT_FAILURE);
 	count_words_quotes(&s, str);
@@ -103,7 +103,7 @@ void	parse_args(t_pipex *pipex, char *str)
 					EXIT_FAILURE));
 	}
 	else
-		return (free(str), error_handling(NULL, ERR_INVALID_ARG, pipex,
+		return (free(str), error_handling(NULL, ERR_CMDNOTFOUND, pipex,
 				EXIT_FAILURE));
 	ft_bzero(&s, sizeof(s));
 	s.str = str;

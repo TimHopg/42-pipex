@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 12:29:02 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:03:21 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 // Errors
 # define ERR_ARGS "Too few arguments\n"
-# define ERR_INVALID_ARG "Invalid argument: Empty string\n"
+# define ERR_INVALID_ARG "Invalid argument\n"
 # define ERR_MALLOC "Malloc error\n"
 # define ERR_CMDNOTFOUND "command not found\n"
 # define ERR_NOFILE "No such file or directory\n"
