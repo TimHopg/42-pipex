@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 17:14:07 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 16:29:28 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:39:17 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
  */
 void	open_outfile(t_pipex *p)
 {
-	// ! check on linux if this can create a file
 	if (p->is_here_doc)
 		p->outfile_fd = open(p->av[p->ac - 1], O_RDWR | O_CREAT | O_APPEND,
 				0644);
@@ -34,9 +33,7 @@ void	open_outfile(t_pipex *p)
  */
 void	open_infile(t_pipex *p)
 {
-	if (p->is_here_doc)
-		return ; // !
-	else
+	if (!p->is_here_doc)
 	{
 		p->infile_fd = open(p->av[1], O_RDONLY);
 		if (p->infile_fd < 0)
