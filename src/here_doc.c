@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/14 16:55:25 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:59:54 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	handle_here_doc(t_pipex *p)
 	if (pipe(p->pipefd) == -1)
 		return (perror(NULL), EXIT_FAILURE);
 	p->pid = fork();
-	p->pid = -1;
 	if (p->pid == -1)
 	{
 		close_safe(p->pipefd[0]);
