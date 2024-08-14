@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 15:32:48 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/13 17:32:07 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 11:16:54 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	here_doc(t_pipex *p)
 	close_safe(p->pipefd[1]);
 }
 
-void	handle_here_doc(t_pipex *p)
+int	handle_here_doc(t_pipex *p)
 {
 	pid_t	pid;
 
@@ -60,4 +60,5 @@ void	handle_here_doc(t_pipex *p)
 	}
 	close_safe(p->pipefd[1]);
 	p->prevfd = p->pipefd[0];
+	return (EXIT_SUCCESS);
 }

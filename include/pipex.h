@@ -6,7 +6,7 @@
 /*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 19:09:23 by thopgood          #+#    #+#             */
-/*   Updated: 2024/08/12 14:17:51 by thopgood         ###   ########.fr       */
+/*   Updated: 2024/08/14 11:16:22 by thopgood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_pipex
 }			t_pipex;
 
 void		execute_pipex(t_pipex *p);
-void		handle_here_doc(t_pipex *p);
+int		handle_here_doc(t_pipex *p);
 void		try_command(t_pipex *pipex, char *file);
 int			ret_arr_index(char **arr, char *str);
 void		dup2_io(int read_fd, int write_fd);
