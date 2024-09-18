@@ -220,6 +220,8 @@ When no [PATH](#path) is set or when there is no environment, on Linux systems, 
 
 ### Orphan Processes
 
+Every process has an ID (a number unique to that process).
+
 To avoid zombie/orphan processes, it's important for all parent processes to `wait()` until the child processes have terminated.
 When using multiple forks, processes may have more than one child process. So `wait(NULL)` by itself may not work correctly. Instead use:
 
@@ -252,6 +254,12 @@ The octal `0644` represents `rw- r-- r--` (user/group/other). Don't be lazy and 
 Appends to file instead of deleting and starting again.
 - Edge cases: check for the existence of files, permissions, handle cases where commands are missing, where the environment is not set etc.
 - You need `get_next_line` for `here_doc`.
+- commands in the same directory must only be executed if preceded by `./`
+- check for non-executable cmds, should return err code `126`
+- try here_doc with empty string
+- check pipex can execute a command in the same directory AND subdirectories
+- delimeter can be `""`
+- `./pipex here_doc " " "cat -b" " " outfile` - this should give the here_doc prompt and then return, command not found
 
 `dup2(fd[1], STDOUT_FILENO)` - reroutes the standard out to file descriptor 1 which is the write end of the pipe. `fd[0]` = read, `fd[1]` = write.
 
@@ -266,3 +274,10 @@ It is possible (and recommended) to instead reuse pipes in a loop. This way you 
 In the child process loop, the last `cmd` will need a fork but will not need a pipe.
 
 ## Resources
+
+- [The Fork System Call](https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html)
+- [Pipes, Forks and Dupes](https://www.rozmichelle.com/pipes-forks-dups/)
+- [LSOF](https://ioflood.com/blog/lsof-linux-command/)
+- [Medium: CS Notes](https://csnotes.medium.com/pipex-tutorial-42-project-4469f5dd5901)
+- [Reactive](https://reactive.so/post/42-a-comprehensive-guide-to-pipex/)
+- [Gitbook: 42](https://42-cursus.gitbook.io/guide/rank-02/pipex)
