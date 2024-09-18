@@ -25,22 +25,26 @@ The program will implement `<`, `>` and `>>` redirects as well as `<<` (heredoc)
 Git clone the repository:
 
 ```shell
-https://github.com/TimHopg/42-Push-Swap.git
+https://github.com/TimHopg/42-pipex.git
 ```
 
-Run `make` from within the directory.
+Run `make` from within the directory to create the program `pipex`.
 
-`make bonus` will create the checker program.
+`make clean` removes object files.
 
-`make clean` will remove object files.
-
-`make fclean` will remove program and object files.
+`make fclean` removes program and object files.
 
 ## Usage
 
 ```shell
-./push_swap [ARGS]
+./pipex [file1] [cmd1] [cmd2] ... [file2]
 ```
+
+Will behave like:  
+`< file1 cmd1 | cmd 2 | ... > file2`
+
+Each of the commands can contain their relevant flags but must be contained in a single string:  
+`"ls -l"`
 
 Arguments can be given as one string, `"1 4 2 3 etc."` or as a number of individual args.
 
