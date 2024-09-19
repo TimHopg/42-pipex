@@ -2,6 +2,8 @@
 
 A program that simulates the functionality of the UNIX pipe. A 42 School Lisboa project.
 
+![pipex grade](./pipex_grade.png)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
